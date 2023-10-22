@@ -4,7 +4,13 @@
   "description": "",
   "main": "build/providers/AdonisFlowProvider.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "mrm": "mrm --preset=@adonisjs/mrm-preset",
+    "pretest": "npm run lint",
+    "test": "node -r @adonisjs/require-ts/build/register bin/test.ts",
+    "clean": "del-cli build",
+    "compile": "npm run lint && npm run clean && tsc",
+    "build": "npm run compile",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -15,5 +21,25 @@
   "bugs": {
     "url": "https://github.com/britzdylan/adonis-flow/issues"
   },
-  "homepage": "https://github.com/britzdylan/adonis-flow#readme"
+  "homepage": "https://github.com/britzdylan/adonis-flow#readme",
+  "devDependencies": {
+    "@adonisjs/mrm-preset": "^5.0.3",
+    "@adonisjs/require-ts": "^2.0.13",
+    "@types/node": "^20.8.7",
+    "del-cli": "^5.1.0",
+    "mrm": "^4.1.22",
+    "typescript": "^5.2.2"
+  },
+  "mrmConfig": {
+    "core": false,
+    "license": "MIT",
+    "services": [],
+    "minNodeVersion": "16.13.1",
+    "probotApps": []
+  },
+  "files": [
+    "build/src",
+    "build/index.d.ts",
+    "build/index.js"
+  ]
 }
