@@ -1,0 +1,19 @@
+{
+  "name": "@dylanbritz/adonisjs-flow",
+  "version": "0.1.0",
+  "description": "",
+  "main": "build/providers/AdonisFlowProvider.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/britzdylan/adonis-flow.git"
+  },
+  "author": "Dylan Britz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/britzdylan/adonis-flow/issues"
+  },
+  "homepage": "https://github.com/britzdylan/adonis-flow#readme"
+}
