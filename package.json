@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/britzdylan/adonis-flow.git"
+    "url": "git+https://github.com/britzdylan/adonis-flow.git"
   },
   "author": "Dylan Britz",
   "license": "MIT",
