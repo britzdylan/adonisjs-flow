@@ -1,16 +1,20 @@
 {
-  "name": "@dylanbritz/adonisjs-flow",
+  "name": "@britzdylan/adonisjs-flow",
   "version": "0.1.0",
-  "description": "",
-  "main": "build/providers/AdonisFlowProvider.js",
+  "description": "AdonisJS Flow is a application starter kit for AdonisJS that includes a lot of the common features you would need to build a web application.",
   "scripts": {
     "mrm": "mrm --preset=@adonisjs/mrm-preset",
     "pretest": "npm run lint",
-    "test": "node -r @adonisjs/require-ts/build/register bin/test.ts",
     "clean": "del-cli build",
+    "format": "prettier --write .",
+    "commit": "cz",
+    "test": "node -r @adonisjs/require-ts/build/register bin/test.ts",
     "compile": "npm run lint && npm run clean && tsc",
     "build": "npm run compile",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "lint": "eslint . --ext=.ts",
+    "release": "np --no-tests --message=\"chore(release): %s\"",
+    "version": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -23,11 +27,20 @@
   },
   "homepage": "https://github.com/britzdylan/adonis-flow#readme",
   "devDependencies": {
+    "@adonisjs/core": "^5.9.0",
     "@adonisjs/mrm-preset": "^5.0.3",
     "@adonisjs/require-ts": "^2.0.13",
+    "@adonisjs/sink": "^5.4.3",
     "@types/node": "^20.8.7",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
     "del-cli": "^5.1.0",
+    "eslint": "^8.52.0",
+    "eslint-plugin-adonis": "^2.1.1",
+    "eslint-plugin-prettier": "^5.0.1",
     "mrm": "^4.1.22",
+    "np": "^8.0.4",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
   "mrmConfig": {
@@ -38,8 +51,47 @@
     "probotApps": []
   },
   "files": [
-    "build/src",
-    "build/index.d.ts",
+    "build/templates",
+    "build/instructions.md",
     "build/index.js"
-  ]
+  ],
+  "eslintConfig": {
+    "extends": [
+      "plugin:adonis/typescriptPackage",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "build"
+  ],
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
+    "useTabs": false,
+    "quoteProps": "consistent",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "printWidth": 100
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "np": {
+    "yarn": false,
+    "contents": "."
+  }
 }
