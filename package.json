@@ -237,6 +237,36 @@
           "src": "resources/views/partials/flashMessages.txt",
           "dest": "partials/flashMessages.edge"
         }
+      ],
+      "start": [
+        {
+          "src": "start/routes/api-tokens.txt",
+          "dest": "routes/api-tokens.ts"
+        },
+        {
+          "src": "start/routes/api-tokens.txt",
+          "dest": "routes/api-tokens.ts"
+        },
+        {
+          "src": "start/routes/auth.txt",
+          "dest": "routes/auth.ts"
+        },
+        {
+          "src": "start/routes/errors.txt",
+          "dest": "routes/errors.ts"
+        },
+        {
+          "src": "start/routes/profile.txt",
+          "dest": "routes/profile.ts"
+        },
+        {
+          "src": "start/events/auth.txt",
+          "dest": "events/auth.ts"
+        },
+        {
+          "src": "start/events/index.txt",
+          "dest": "events/index.ts"
+        }
       ]
     }
   }
