@@ -29,7 +29,7 @@ function makeModels(projectRoot: string, app: ApplicationContract, sink: typeof 
   const userModelTemplate = new sink.files.MustacheFile(
     projectRoot,
     userModelPath,
-    getStub('templates/app/models/User.txt')
+    getStub('app/models/User.txt')
   )
 
   userModelTemplate.overwrite = true
@@ -43,8 +43,8 @@ function makeModels(projectRoot: string, app: ApplicationContract, sink: typeof 
   const userProfileModelPath = join(modelsDirectory, 'UserProfile.ts')
   const userProfileModelTemplate = new sink.files.MustacheFile(
     projectRoot,
-    userModelPath,
-    getStub('templates/app/models/UserProfile.txt')
+    userProfileModelPath,
+    getStub('app/models/UserProfile.txt')
   )
 
   userProfileModelTemplate.overwrite = true
@@ -58,8 +58,8 @@ function makeModels(projectRoot: string, app: ApplicationContract, sink: typeof 
   const apiTokenModelPath = join(modelsDirectory, 'ApiToken.ts')
   const apiTokenModelTemplate = new sink.files.MustacheFile(
     projectRoot,
-    userModelPath,
-    getStub('templates/app/models/ApiToken.txt')
+    apiTokenModelPath,
+    getStub('app/models/ApiToken.txt')
   )
 
   apiTokenModelTemplate.overwrite = true
@@ -73,8 +73,8 @@ function makeModels(projectRoot: string, app: ApplicationContract, sink: typeof 
   const userSessionModelPath = join(modelsDirectory, 'UserSession.ts')
   const userSessionModelTemplate = new sink.files.MustacheFile(
     projectRoot,
-    userModelPath,
-    getStub('templates/app/models/UserSession.txt')
+    userSessionModelPath,
+    getStub('app/models/UserSession.txt')
   )
 
   userSessionModelTemplate.overwrite = true
@@ -89,7 +89,7 @@ function makeModels(projectRoot: string, app: ApplicationContract, sink: typeof 
   const passwordResetModelTemplate = new sink.files.MustacheFile(
     projectRoot,
     passwordResetModelPath,
-    getStub('templates/app/models/PasswordReset.txt')
+    getStub('app/models/PasswordReset.txt')
   )
 
   if (passwordResetModelTemplate.exists()) {
