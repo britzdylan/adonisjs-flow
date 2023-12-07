@@ -1,0 +1,27 @@
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import User from 'App/Models/User'
+import FlashMessages from 'App/Enums/FlashMessage'
+
+const { EmailNotVerified } = FlashMessages
+
+export default class VerificationCheck {
+  public async handle(
+    { request, auth, response, session }: HttpContextContract,
+    next: () => Promise<void>
+  ) {
+    if (!auth.isLoggedIn) {
+      const user = await User.findByOrFail('email', request.input('email'))
+      if (!user.isVerified) {
+        session.flash('errors', [EmailNotVerified])
+        return response.redirect().toRoute('verification.create', { email: user.email })
+      }
+    }
+
+    if (auth.user?.isVerified === false) {
+      session.flash('errors', [EmailNotVerified])
+      return response.redirect().toRoute('verification.create', { email: auth.user.email })
+    }
+
+    await next()
+  }
+}

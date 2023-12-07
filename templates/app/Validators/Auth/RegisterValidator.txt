@@ -1,0 +1,14 @@
+// app/Validators/RegisterValidator.ts
+
+import { schema } from '@ioc:Adonis/Core/Validator'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import ValidationRulesProvider from 'App/Providers/ValidationRulesProvider'
+export default class RegisterValidator extends ValidationRulesProvider {
+  constructor(protected ctx: HttpContextContract) {
+    super()
+  }
+
+  public schema = schema.create({
+    ...this.registerRules(),
+  })
+}

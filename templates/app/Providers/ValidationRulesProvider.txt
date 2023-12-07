@@ -1,0 +1,74 @@
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import flowConfig from 'Config/flow'
+
+export default class ValidationRulesProvider {
+  private email = {
+    required: schema.string({ trim: true }, [
+      rules.email(),
+      rules.unique({ table: 'users', column: 'email' }),
+    ]),
+    optional: schema.string.optional({ trim: true }, [
+      rules.email(),
+      rules.unique({ table: 'users', column: 'email' }),
+    ]),
+    notUnique: schema.string({ trim: true }, [rules.email()]),
+  }
+
+  private passwordConfirmed = {
+    required: schema.string({}, [
+      rules.minLength(8),
+      rules.alphaNum(),
+      rules.trim(),
+      rules.confirmed(),
+    ]),
+  }
+
+  protected registerRules() {
+    if (flowConfig.features.termsAndPrivacyPolicy) {
+      return {
+        email: this.email.required,
+        password: this.passwordConfirmed.required,
+        termsPrivacy: schema.boolean(),
+      }
+    } else {
+      return {
+        email: this.email.required,
+        password: this.passwordConfirmed.required,
+        termsPrivacy: schema.boolean.nullableAndOptional(),
+      }
+    }
+  }
+
+  protected passwordResetRules() {
+    return {
+      password: this.passwordConfirmed.required,
+    }
+  }
+
+  protected passwordUpdateRules() {
+    return {
+      currentPassword: schema.string({ trim: true }, []),
+      password: this.passwordConfirmed.required,
+    }
+  }
+
+  protected profileUpdateRules() {
+    return {
+      firstName: schema.string({ trim: true }, [rules.maxLength(255)]),
+      lastName: schema.string({ trim: true }, [rules.maxLength(255)]),
+      email: this.email.notUnique,
+    }
+  }
+
+  //  Messages
+
+  public messages = {
+    'email.required': 'Email is required',
+    'email.email': 'Email is not valid',
+    'password.required': 'Password is required',
+    'password.minLength': 'Password must be at least 8 characters long',
+    'unique': '{{ field }} is not available',
+    'confirmed': 'Passwords does not match',
+    'email.unique': 'Email is already in use',
+  }
+}

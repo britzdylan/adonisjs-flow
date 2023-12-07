@@ -1,0 +1,25 @@
+enum FlashMessages {
+  // auth
+  LoginSuccess = 'Login successful!',
+  LoginFail = 'Invalid credentials, please try again.',
+  LogoutSuccess = 'Logged out successfully.',
+  RegisterSuccess = 'Registration successful! Please check your email to verify your account.',
+  EmailVerified = 'Your email has been verified.',
+  EmailNotVerified = 'Please verify your email address.',
+  EmailUpdated = 'Your email has been updated.',
+  EmailVerificationResent = 'Verification email resent, please check your email.',
+  PasswordResetSuccess = 'Your password has been reset.',
+  PasswordResetRequested = 'If your email exists in our system, you will receive a password reset link shortly.',
+  PasswordValidationFailed = 'Password incorrect, please try again.',
+  // profile
+  ProfileUpdated = 'Profile updated successfully',
+
+  // Files
+  FileTooLarge = 'File too large, please try again.',
+
+  // Api Tokens
+  ApiTokenCreated = 'Api token created successfully.',
+  ApiTokenDeleted = 'Api token deleted successfully.',
+}
+
+export default FlashMessages

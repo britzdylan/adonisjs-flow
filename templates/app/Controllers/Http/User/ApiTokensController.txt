@@ -1,0 +1,33 @@
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Event from '@ioc:Adonis/Core/Event'
+import ApiToken from 'App/Models/ApiToken'
+import FlashMessages from 'App/Enums/FlashMessage'
+
+const { ApiTokenDeleted } = FlashMessages
+
+export default class ApiTokensController {
+  public async index({ view }: HttpContextContract) {
+    const tokens = await ApiToken.all()
+    return view.render('dashboard/api-tokens', { tokens })
+  }
+
+  public async store({ request, response, auth, session }: HttpContextContract) {
+    const { name, expiresIn } = request.all()
+    const user = auth.user!
+    const token = await auth.use('api').generate(user, {
+      name,
+      expiresIn,
+    })
+    session.flash({ token: token })
+    Event.emit('api-token:created', token)
+    response.redirect().toRoute('api-tokens.index')
+  }
+
+  public async destroy({ response, request, session }: HttpContextContract) {
+    const token = await ApiToken.findOrFail(request.param('id'))
+    await token.delete()
+    Event.emit('api-token:deleted', token)
+    session.flash({ success: [ApiTokenDeleted] })
+    response.redirect().toRoute('api-tokens.index')
+  }
+}

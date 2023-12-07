@@ -1,0 +1,22 @@
+import Event from '@ioc:Adonis/Core/Event'
+import UserSession from 'App/Models/UserSession'
+import EmailSendingProvider from 'App/Providers/EmailSendingProvider'
+
+Event.on('user:register', (user) => {
+  EmailSendingProvider.sendEmailVerificationLink(user)
+})
+
+Event.on('user:login', ({}) => {})
+
+Event.on('user:logout', ({}) => {})
+
+Event.on('user:resetPasswordRequest', (data) => {
+  EmailSendingProvider.sendPasswordResetLink(data)
+})
+
+Event.on('user:resetPassword', (data) => {
+  EmailSendingProvider.sendPasswordResetSuccess(data.user)
+  data.passwordReset.useToken()
+  data.passwordReset.save()
+  UserSession.query().where('userId', data.user.id).delete()
+})

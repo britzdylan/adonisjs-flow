@@ -1,0 +1,32 @@
+import { DateTime } from 'luxon'
+import { BaseModel, column, computed } from '@ioc:Adonis/Lucid/Orm'
+import { attachment, AttachmentContract } from '@ioc:Adonis/Addons/AttachmentLite'
+export default class UserProfile extends BaseModel {
+  public static routeLookupKey = 'username'
+
+  @column({ isPrimary: true, serializeAs: null })
+  public id: number
+
+  @column()
+  public userId: number
+
+  @attachment({ folder: 'avatars', preComputeUrl: true })
+  public avatar: AttachmentContract | null
+
+  @column()
+  public firstName?: string | null
+
+  @column()
+  public lastName?: string | null
+
+  @computed()
+  public get fullName() {
+    return `${this.firstName} ${this.lastName}`
+  }
+
+  @column.dateTime({ autoCreate: true })
+  public createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  public updatedAt: DateTime
+}

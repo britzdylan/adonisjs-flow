@@ -1,0 +1,34 @@
+// database/migrations/xxxx_xx_xx_xxxxxx_create_user_sessions_table.ts
+
+import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+
+export default class CreateUserSessionsTable extends BaseSchema {
+  protected tableName = 'user_sessions'
+
+  public async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.string('id').primary()
+      table
+        .integer('user_id')
+        .unsigned()
+        .nullable()
+        .references('id')
+        .inTable('users')
+        .onDelete('CASCADE')
+        .index()
+      table.string('ip_address').nullable()
+      table.string('os').nullable()
+      table.string('device').nullable()
+      table.string('browser').nullable()
+      table.string('country').nullable()
+      table.text('payload')
+      table.timestamp('last_activity_at', { useTz: true })
+      table.timestamp('created_at', { useTz: true })
+      table.timestamp('updated_at', { useTz: true })
+    })
+  }
+
+  public async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}

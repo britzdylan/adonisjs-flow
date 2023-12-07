@@ -1,0 +1,127 @@
+import { DateTime } from 'luxon'
+import {
+  BaseModel,
+  column,
+  beforeSave,
+  beforeCreate,
+  afterCreate,
+  computed,
+  hasOne,
+  HasOne,
+  hasMany,
+  HasMany,
+} from '@ioc:Adonis/Lucid/Orm'
+import Hash from '@ioc:Adonis/Core/Hash'
+import Encryption from '@ioc:Adonis/Core/Encryption'
+import { string } from '@ioc:Adonis/Core/Helpers'
+import UserProfile from 'App/Models/UserProfile'
+import flowConfig from 'Config/flow'
+import UserSession from 'App/Models/UserSession'
+
+export default class User extends BaseModel {
+  @column({ isPrimary: true })
+  public id: number
+
+  @column()
+  public email: string
+
+  @column({ serializeAs: null })
+  public password: string
+
+  @column()
+  public rememberMeToken?: string
+
+  @column({ serializeAs: null })
+  public emailVerificationToken: string | null
+
+  @column({ serializeAs: null })
+  public emailResetRequest: string | null
+
+  @column.dateTime()
+  public emailVerifiedAt?: DateTime
+
+  @column.dateTime({ autoCreate: true })
+  public createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  public updatedAt: DateTime
+
+  @computed()
+  public get isVerified() {
+    if (!!this.emailVerifiedAt) {
+      return true
+    }
+    return false
+  }
+
+  /*
+  / Relationships
+  */
+
+  @hasOne(() => UserProfile)
+  public profile: HasOne<typeof UserProfile>
+
+  @hasMany(() => UserSession)
+  public sessions: HasMany<typeof UserSession>
+
+  /*
+  / Hooks
+  */
+  @beforeCreate()
+  public static generateVerificationToken(user: User) {
+    if (flowConfig.features.verification === 'strict') {
+      user.generateVerificationToken()
+    }
+  }
+
+  @afterCreate()
+  public static async createProfile(user: User) {
+    const profile = await user.related('profile').create({
+      userId: user.id,
+    })
+    await profile.save()
+  }
+
+  @beforeSave()
+  public static async hashPassword(user: User) {
+    if (user.$dirty.password) {
+      user.password = await Hash.make(user.password)
+    }
+  }
+
+  /*
+  / Methods
+  */
+
+  public verifyEmail(token: string): boolean {
+    if (Encryption.decrypt(token) === Encryption.decrypt(this.emailVerificationToken ?? '')) {
+      this.emailVerifiedAt = DateTime.now()
+      this.emailVerificationToken = null
+      return true
+    }
+    return false
+  }
+
+  public generateVerificationToken() {
+    this.emailVerificationToken = Encryption.encrypt(string.generateRandom(40))
+  }
+
+  public async newEmailResetRequest(email: string) {
+    return (this.emailResetRequest = Encryption.encrypt(email, '2 hours'))
+  }
+
+  public async updateEmail(token: string) {
+    const newEmail = Encryption.decrypt<string>(token ?? '')
+    if (!newEmail) {
+      return false
+    }
+    this.email = newEmail!
+    this.emailResetRequest = null
+    this.emailVerifiedAt = DateTime.now()
+    return true
+  }
+
+  public async verifyPassword(password: string): Promise<boolean> {
+    return Hash.verify(this.password, password)
+  }
+}

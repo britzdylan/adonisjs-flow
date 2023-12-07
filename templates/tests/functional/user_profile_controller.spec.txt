@@ -1,0 +1,64 @@
+import { test } from '@japa/runner'
+import Route from '@ioc:Adonis/Core/Route'
+import Routes from 'App/Config/RouteNames'
+import User from 'App/Models/User'
+
+const { profile, home } = Routes
+let user: User
+test.group('User profile controller', (group) => {
+  group
+    .setup(async () => {
+      user = await User.create({
+        username: 'dylandoe',
+        email: 'britzdylan@gmail.com',
+        password: 'password123',
+      })
+
+      await user.save()
+    })
+    .teardown(async () => {
+      await user.delete()
+    })
+
+  test('should render the user profile view', async ({ client }) => {
+    const response = await client.get(Route.makeUrl(profile.show, { username: user.username }))
+    response.assertStatus(200)
+    response.assertTextIncludes(`<h1 class="text-xl font-bold mb-4">${user.username}</h1>`)
+  })
+
+  test('should render the edit user profile view', async ({ client }) => {
+    const response = await client
+      .get(Route.makeUrl(profile.edit, { username: user.username }))
+      .loginAs(user)
+    response.assertStatus(200)
+    response.assertTextIncludes(`<h1>Edit Profile (${user.username})</h1>`)
+  })
+
+  test('should handle invalid data', async ({ client }) => {
+    const response = await client
+      .put(Route.makeUrl(profile.update, { username: user.username }))
+      .form({
+        username: 'dylan',
+        genderTypeId: 4,
+      })
+      .loginAs(user)
+    response.assertStatus(200)
+    response.assertRedirectsTo(Route.makeUrl(profile.show, { username: user.username }))
+  })
+
+  test('should update user profile', async ({ client, assert }) => {
+    const response = await client
+      .put(Route.makeUrl(profile.update, { username: user.username }))
+      .form({
+        firstName: 'Dylan',
+        lastName: 'Britz',
+        jobTitle: 'Software Engineer',
+        phone: '1234567890',
+        genderTypeId: 0,
+      })
+      .loginAs(user)
+
+    response.assertStatus(200)
+    response.assertRedirectsTo(Route.makeUrl(home.index))
+  })
+})

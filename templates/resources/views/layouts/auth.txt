@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+@include('partials/head')
+
+<body class="bg-base-300 min-h-screen flex flex-col ">
+    @include('partials/flashMessages')
+    <main class="mx-auto container py-8 h-full  flex flex-col  flex-grow items-center justify-center">
+        @!section('body')
+    </main>
+</body>
+
+
+</html>

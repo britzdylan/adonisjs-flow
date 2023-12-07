@@ -1,0 +1,6 @@
+@set('deleteURl', `/dashboard/profile?_method=DELETE`)
+<p>Please note this is a permanent action and all of your data will be wiped from our database. This is irreversible and
+    make sure to backup any data you might need in the future</p>
+<form class="flex flex-col w-full gap-2 pt-4" action="{{ deleteURl }}" method="POST">
+    <input class="btn btn-error btn-sm w-max" type="submit" value="Logout and Close my account">
+</form>

@@ -1,0 +1,48 @@
+import Route from '@ioc:Adonis/Core/Route'
+import flowConfig from 'Config/flow'
+
+Route.group(() => {
+  Route.group(() => {
+    Route.get('/logout', 'LoginController.destroy').as('login.destroy')
+  }).middleware('auth')
+
+  Route.group(() => {
+    if (flowConfig.features.verification === 'strict') {
+      Route.post('/login', 'LoginController.store').as('login.store').middleware('verified')
+    } else {
+      Route.post('/login', 'LoginController.store').as('login.store')
+    }
+
+    Route.get('/register', 'RegisterController.create').as('register.create')
+    Route.post('/register', 'RegisterController.store').as('register.store')
+
+    Route.get('/login', 'LoginController.create').as('login.create')
+
+    Route.get('/forgot-password', 'PasswordResetRequestController.create').as(
+      'password.createReset'
+    )
+    Route.post('/forgot-password', 'PasswordResetRequestController.store').as('password.storeReset')
+
+    Route.get('/reset-password/:token', 'PasswordResetController.create').as(
+      'password.createPassword'
+    )
+    Route.post('/reset-password/:token', 'PasswordResetController.store').as(
+      'password.storePassword'
+    )
+  }).middleware('guest')
+
+  Route.get('/verification/:email', 'RegisterController.createVerification').as(
+    'verification.create'
+  )
+  Route.post('/verification/:email', 'RegisterController.resendVerification').as(
+    'verification.store'
+  )
+  Route.get('/verification/verify/:token', 'RegisterController.edit').as('verification.confirm')
+
+  Route.get('/verification/password/:intended', 'PasswordConfirmationController.create').as(
+    'password.confirm'
+  )
+  Route.post('/verification/password/:intended', 'PasswordConfirmationController.store').as(
+    'password.verify'
+  )
+}).namespace('App/Controllers/Http/Auth')

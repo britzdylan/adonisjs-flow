@@ -1,0 +1,118 @@
+import Route from '@ioc:Adonis/Core/Route'
+import Mail from '@ioc:Adonis/Addons/Mail'
+import Env from '@ioc:Adonis/Core/Env'
+import MailerPresets from 'App/Enums/MailerPresets'
+import type User from 'App/Models/User'
+
+const {
+  FROM,
+  RESET_PASSWORD_SUCCESS_MESSAGE,
+  RESET_PASSWORD_SUCCESS_SUBJECT,
+  RESET_PASSWORD_SUCCESS_TITLE,
+  RESET_PASSWORD_MESSAGE,
+  RESET_PASSWORD_SUBJECT,
+  RESET_PASSWORD_TITLE,
+  RESET_PASSWORD_URL_TEXT,
+  EMAIL_VERIFICATION_SUBJECT,
+  EMAIL_VERIFICATION_TITLE,
+  EMAIL_VERIFICATION_MESSAGE,
+  USER_DELETE_SUBJECT,
+  USER_DELETE_TITLE,
+  USER_DELETE_MESSAGE,
+  EMAIL_UPDATE_SUBJECT,
+  EMAIL_UPDATE_TITLE,
+  EMAIL_UPDATE_MESSAGE,
+  EMAIL_UPDATE_URL_TEXT,
+} = MailerPresets
+
+export default class EmailSendingProvider {
+  constructor() {}
+
+  public static sendEmailVerificationLink(user: User) {
+    const url = `${Env.get('APP_URL')}${Route.makeUrl('verification.confirm', [
+      user.emailVerificationToken,
+    ])}`
+    const description = EMAIL_VERIFICATION_MESSAGE
+    const urlText = EMAIL_VERIFICATION_TITLE
+
+    Mail.send((message) => {
+      message
+        .priority('normal')
+        .from(FROM)
+        .to(user.email)
+        .subject(EMAIL_VERIFICATION_SUBJECT)
+        .htmlView('emails/welcome.index', {
+          url,
+          description,
+          urlText,
+        })
+        .textView('emails/welcome.plain', { url, description, urlText })
+    })
+  }
+
+  public static sendPasswordResetLink(data: { user: User; token: string }) {
+    const url = `${Env.get('APP_URL')}${Route.makeUrl('password.createPassword', [data.token])}`
+    const description = RESET_PASSWORD_MESSAGE
+    const title = RESET_PASSWORD_TITLE
+    const urlText = RESET_PASSWORD_URL_TEXT
+    Mail.send((message) => {
+      message
+        .priority('high')
+        .from(FROM)
+        .to(data.user.email)
+        .subject(RESET_PASSWORD_SUBJECT)
+        .htmlView('emails/verify_template.index', { url, description, title, urlText })
+        .textView('emails/verify_template.plain', { url, description, title, urlText })
+    })
+  }
+
+  public static async sendPasswordResetSuccess(user: User) {
+    const description = RESET_PASSWORD_SUCCESS_MESSAGE
+    const title = RESET_PASSWORD_SUCCESS_TITLE
+    Mail.sendLater((message) => {
+      message
+        .priority('low')
+        .from(FROM)
+        .to(user.email)
+        .subject(RESET_PASSWORD_SUCCESS_SUBJECT)
+        .htmlView('emails/confirmation_template.index', { title, description })
+        .textView('emails/confirmation_template.plain', { title, description })
+    })
+  }
+
+  public static async sendAccountLockNotification() {
+    // TODO send email
+    return true
+  }
+
+  public static async sendAccountDeleteNotification(user: User) {
+    const description = USER_DELETE_MESSAGE
+    const title = USER_DELETE_TITLE
+    Mail.sendLater((message) => {
+      message
+        .priority('low')
+        .from(FROM)
+        .to(user.email)
+        .subject(USER_DELETE_SUBJECT)
+        .htmlView('emails/confirmation_template.index', { title, description })
+        .textView('emails/confirmation_template.plain', { title, description })
+    })
+  }
+
+  public static async sendNewEmailRequestConfirmation(user: User) {
+    const url = `${Env.get('APP_URL')}${Route.makeUrl('user.newEmail', [user.emailResetRequest])}`
+    const description = EMAIL_UPDATE_MESSAGE
+    const title = EMAIL_UPDATE_TITLE
+    const urlText = EMAIL_UPDATE_URL_TEXT
+
+    Mail.sendLater((message) => {
+      message
+        .priority('normal')
+        .from(FROM)
+        .to(user.email)
+        .subject(EMAIL_UPDATE_SUBJECT)
+        .htmlView('emails/verify_template.index', { url, title, description, urlText })
+        .textView('emails/verify_template.plain', { url, title, description, urlText })
+    })
+  }
+}

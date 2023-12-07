@@ -1,0 +1,6 @@
+@set('createTokenUrl', `/dashboard/api-tokens`)
+<form class="flex flex-col w-full gap-2 pt-4" action="{{ createTokenUrl }}" method="POST">
+    <input class="input input-bordered" value="{{flashMessages.get('name', token?.name ?? '')}}" type="text" name="name"
+        placeholder="Name">
+    <input class="btn btn-primary btn-sm w-max" type="submit" value="Save">
+</form>

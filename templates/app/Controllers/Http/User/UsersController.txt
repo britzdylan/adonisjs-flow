@@ -1,0 +1,66 @@
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Event from '@ioc:Adonis/Core/Event'
+import User from 'App/Models/User'
+import FlashMessages from 'App/Enums/FlashMessage'
+import PasswordUpdateValidator from 'App/Validators/User/PasswordUpdateValidator'
+
+const { EmailUpdated, PasswordValidationFailed } = FlashMessages
+export default class UsersController {
+  public async index({}: HttpContextContract) {}
+
+  public async create({}: HttpContextContract) {}
+
+  public async store({}: HttpContextContract) {}
+
+  public async show({}: HttpContextContract) {}
+
+  public async edit({}: HttpContextContract) {}
+
+  public async update({}: HttpContextContract) {}
+
+  public async destroy({ auth, response }: HttpContextContract) {
+    const user = auth.user!
+    await auth.logout()
+    await user.delete()
+    Event.emit('user:delete', user)
+    response.redirect().toRoute('login.create')
+  }
+
+  /**
+   * Verifies users new email address and updates it.
+   */
+  public async confirmEmailUpdateRequest({
+    request,
+    response,
+    session,
+    auth,
+  }: HttpContextContract) {
+    const { email } = request.params()
+    const user = await User.findByOrFail('emailResetRequest', email)
+    const updatedEmail = user.updateEmail(email)
+    if (!updatedEmail) {
+      session.flash('error', ['Invalid email update request'])
+      response.redirect().toRoute('login.create')
+    }
+    await user.save()
+    await auth.logout()
+    session.flash('success', [EmailUpdated])
+    return response.redirect().toRoute('login.create')
+  }
+
+  /**
+   * Updates authenticated user's password.
+   */
+  public async updatePassword({ request, response, session, auth }: HttpContextContract) {
+    const { password, currentPassword } = await request.validate(PasswordUpdateValidator)
+    const user = auth.user!
+    if (!(await user.verifyPassword(currentPassword))) {
+      session.flash('errors', [PasswordValidationFailed])
+      return response.redirect().back()
+    }
+    user.password = password
+    await user.save()
+    session.flash('success', ['Password updated successfully'])
+    return response.redirect().toRoute('profile.edit')
+  }
+}

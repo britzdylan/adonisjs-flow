@@ -1,0 +1,76 @@
+import type { MinuteNumbers } from 'luxon'
+
+const flowConfig: FlowConfig = {
+  /*
+|--------------------------------------------------------------------------
+| Stack Config - not implemented yet
+|--------------------------------------------------------------------------
+|
+| The stack config is used to define the stack for which you want to 
+| handle your views. The stack can be one of the following: edge, inertia
+|
+*/
+  stack: 'edge',
+  /*
+|--------------------------------------------------------------------------
+| Features config
+|--------------------------------------------------------------------------
+|
+| Configure optional features for AdonisJs Flow
+|
+*/
+  features: {
+    termsAndPrivacyPolicy: false,
+    verification: 'strict',
+    passwordConfirmation: 5,
+  },
+  /*
+|--------------------------------------------------------------------------
+| Views Config
+|--------------------------------------------------------------------------
+|
+| The views config is to handle all your view template file locations 
+| in one convenient place, without needing to go digging inside the controllers, providers etc.to make 
+| small updates
+|
+*/
+  views: {
+    login: 'auth/login',
+    register: 'auth/register',
+    passwordResetRequest: 'auth/password-reset-request',
+    passwordReset: 'auth/password-reset',
+    verification: 'auth/verification',
+    signedUrlInvalid: 'auth/signed-url-invalid',
+    confirmPassword: 'auth/confirm-password',
+    dashboard: 'dashboard/index',
+    profile: 'dashboard/profile/edit',
+    apiTokens: 'dashboard/api-tokens',
+  },
+}
+
+interface FlowFeatures {
+  termsAndPrivacyPolicy: boolean
+  verification: 'strict' | 'relaxed'
+  passwordConfirmation: MinuteNumbers
+}
+
+interface FlowViews {
+  login: string
+  register: string
+  verification: string
+  passwordResetRequest: string
+  passwordReset: string
+  signedUrlInvalid: string
+  confirmPassword: string
+  dashboard: string
+  profile: string
+  apiTokens: string
+}
+
+interface FlowConfig {
+  stack: 'edge' | 'inertia'
+  features: FlowFeatures
+  views: FlowViews
+}
+
+export default flowConfig

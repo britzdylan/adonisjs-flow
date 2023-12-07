@@ -1,0 +1,43 @@
+@layout('layouts/main')
+
+@section('body')
+<div class="flex flex-col divide-y-2 px-4 ">
+    <section id="create-api" class="profileSection">
+        <div class="flex flex-col">
+            <h3>Create API Token</h3>
+            <p>API tokens allow third-party services to authenticate with our applications on your behalf</p>
+        </div>
+        <div class="formWrapper">
+            @include('partials/api-tokens/create-token')
+        </div>
+    </section>
+    <section id="list-api" class="profileSection">
+        <div class="flex flex-col">
+            <h3>Manage API Tokens</h3>
+            <p>You may delete any of your existing tokens if they are no longer needed.</p>
+        </div>
+        <div class="formWrapper">
+            @include('partials/api-tokens/list-tokens')
+        </div>
+    </section>
+    @if(flashMessages.has('token'))
+    <div class="absolute top-10 left-0 right-0 flex items-center justify-center px-8 border-none">
+        <div role="alert" class="alert shadow-lg mx-auto z-50 w-full max-w-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                class="stroke-info shrink-0 w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div class="w-full">
+                <h3 class="font-bold">API Created</h3>
+                <div class="text-xs w-full mt-2">
+                    <code
+                        class="p-2 bg-gray-200 rounded-md shadow-inner w-full block">{{flashMessages.get('token').token}}</code>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @end
+</div>
+@end

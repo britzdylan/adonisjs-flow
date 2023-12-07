@@ -1,0 +1,20 @@
+@layout('layouts/main')
+
+@section('body')
+<section class="bg-base-100 shadow-md rounded-lg overflow-hidden grid grid-cols-2 gap-0">
+    <div class="bg-white col-span-2 p-8">
+        <h1>Adonis Flux</h1>
+        <h2>Welcome to your Flux project</h2>
+        <p>
+            Adonis Flux is a beautifully designed application starter kit for AdonisJs and provides the perfect
+            starting point for your next NodeJS application. Flux provides the implementation for your application's
+            login, registration, email verification, two-factor authentication, session management, API and optional
+            team
+            management features.
+
+            Flux is designed using TailwindCSS and offers your choice
+            of EdgeJs or scaffolding.
+        </p>
+    </div>
+</section>
+@end

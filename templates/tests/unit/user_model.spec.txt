@@ -1,0 +1,60 @@
+// test/unit/UserModel.spec.ts
+
+import { test } from '@japa/runner'
+import Hash from '@ioc:Adonis/Core/Hash'
+import User from 'App/Models/User'
+import UserProfile from 'App/Models/UserProfile'
+
+let user: User
+
+test.group('User Model', (group) => {
+  group.setup(async () => {
+    user = await User.create({
+      username: 'britzdylan',
+      email: 'britzdylan@gmail.com',
+      password: 'plaintextpassword',
+    })
+
+    await user.save()
+  })
+
+  test('should hash the password before saving it to the database', async ({ assert }) => {
+    assert.notEqual(user.password, 'plaintextpassword')
+    assert.isTrue(await Hash.verify(user.password, 'plaintextpassword'))
+  })
+
+  test('should enforce username and email uniqueness', async ({ assert }) => {
+    const duplicateUser = new User()
+    duplicateUser.fill({
+      username: 'britzdylan',
+      email: 'britzdylan@gmail.com',
+      password: 'plaintextpassword',
+    })
+
+    assert.rejects(() => duplicateUser.save())
+  })
+
+  test('Should generate a verification token when a user is created', async ({ assert }) => {
+    const user = await User.findByOrFail('email', 'britzdylan@gmail.com')
+    assert.exists(user.emailVerificationToken)
+  })
+
+  test('Should create a new profile after the user is created', async ({ assert }) => {
+    const user = await User.query().where('username', 'britzdylan').preload('profile').firstOrFail()
+    assert.exists(user.profile.id)
+  })
+
+  test('verifyEmail method should verify email', async ({ assert }) => {
+    const userFromDB = await User.findByOrFail('email', 'britzdylan@gmail.com')
+    const token = userFromDB.emailVerificationToken
+    assert.isTrue(userFromDB.verifyEmail(token ?? ''))
+    assert.isUndefined(userFromDB.emailVerificationToken)
+    assert.isDefined(userFromDB.emailVerifiedAt)
+  })
+
+  test('user profile is deleted when user is deleted', async ({ assert }) => {
+    await user.delete()
+    const userProfile = await UserProfile.query().where('username', user.username).first()
+    assert.isNull(userProfile)
+  })
+})

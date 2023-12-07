@@ -1,0 +1,12 @@
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+
+export default class ShareProfile {
+  public async handle({ view, auth }: HttpContextContract, next: () => Promise<void>) {
+    const gProfile = await auth.user?.related('profile').query().firstOrFail()
+    view.share({
+      gProfile,
+    })
+
+    await next()
+  }
+}

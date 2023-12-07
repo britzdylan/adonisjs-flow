@@ -1,0 +1,75 @@
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Event from '@ioc:Adonis/Core/Event'
+import User from 'App/Models/User'
+import RegisterValidator from 'App/Validators/Auth/RegisterValidator'
+import flowConfig from 'Config/flow'
+import FlashMessage from 'App/Enums/FlashMessage'
+
+const { register, verification } = flowConfig.views
+const { RegisterSuccess, EmailVerified, EmailVerificationResent } = FlashMessage
+
+/**
+ * Controller for registering and verifying users.
+ */
+export default class RegistersController {
+  /**
+   * Renders the registration view.
+   */
+  public async create({ view }: HttpContextContract): Promise<string> {
+    return view.render(register)
+  }
+
+  /**
+   * Validates user data and creates a new user.
+   */
+  public async store({ request, response, session, auth }: HttpContextContract): Promise<void> {
+    const userData = await request.validate(RegisterValidator)
+    const user = await User.create(userData)
+
+    Event.emit('user:register', user)
+    session.flash('success', [RegisterSuccess])
+
+    if (flowConfig.features.verification === 'strict') {
+      return response.redirect().toRoute('login.create')
+    }
+    auth.login(user)
+    return response.redirect().toRoute('dashboard.index')
+  }
+
+  /**
+   * Verifies a user's email address.
+   */
+  public async edit({ request, response, session }: HttpContextContract): Promise<void> {
+    const token = request.params().token
+    const user = await User.findByOrFail('emailVerificationToken', token)
+
+    const verified = user.verifyEmail(token)
+    if (!verified) {
+      return response.status(403).badRequest()
+    }
+    await user.save()
+    session.flash('success', [EmailVerified])
+    return response.redirect().toRoute('login.create')
+  }
+  /**
+   * Render  email verification view.
+   */
+  public async createVerification({ view, request }: HttpContextContract): Promise<string> {
+    return view.render(verification, { email: request.params().email })
+  }
+  /**
+   * Resend email verification.
+   */
+  public async resendVerification({
+    request,
+    response,
+    session,
+  }: HttpContextContract): Promise<void> {
+    const user = await User.findByOrFail('email', request.params().email)
+    user.generateVerificationToken()
+    await user.save()
+    Event.emit('mail:sendEmailVerification', user)
+    session.flash('success', [EmailVerificationResent])
+    return response.redirect().back()
+  }
+}

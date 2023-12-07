@@ -1,0 +1,44 @@
+@layout('layouts/main')
+
+@section('body')
+<div class="flex flex-col divide-y-2 px-4 ">
+    <section id="profile" class="profileSection">
+        <div class="flex flex-col">
+            <h3>Profile Information</h3>
+            <p>Update your accounts profile information and avatar</p>
+        </div>
+        <div class="formWrapper">
+            @include('partials/profile/details')
+        </div>
+    </section>
+    <section id="password" class="profileSection">
+        <div class="flex flex-col">
+            <h3>Update Password</h3>
+            <p>Ensure your account is using a long, random password to stay secure</p>
+        </div>
+        <div class="formWrapper">
+            @include('partials/profile/password')
+        </div>
+    </section>
+    <section id="sessions" class="profileSection">
+        <div class="flex flex-col">
+            <h3>Browser sessions</h3>
+            <p>Manage and logout your active sessions on other browsers and devices</p>
+        </div>
+        <div class="formWrapper">
+            @include('partials/profile/sessions')
+        </div>
+    </section>
+    <section id="delete" class="profileSection">
+        <div class="flex flex-col">
+            <h3>Delete Account</h3>
+            <p>Permanently delete and close your account</p>
+        </div>
+        <div class="formWrapper">
+            @include('partials/profile/delete')
+        </div>
+    </section>
+</div>
+
+
+@end

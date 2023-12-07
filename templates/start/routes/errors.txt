@@ -1,0 +1,5 @@
+import Route from '@ioc:Adonis/Core/Route'
+
+Route.get('/500', async ({ view }) => {
+  return view.render('errors/505')
+}).as('error.invalidURL')
