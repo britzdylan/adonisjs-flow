@@ -19,7 +19,86 @@ function getStub(...relativePaths: string[]) {
   return join(__dirname, 'templates', ...relativePaths)
 }
 
-function makeModels(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+function makeModels(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {
+  const modelsDirectory = app.resolveNamespaceDirectory('models') || 'app/Models'
+
+  /**
+   * User model
+   */
+  const userModelPath = join(modelsDirectory, 'User.ts')
+  const userModelTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    userModelPath,
+    getStub('templates/app/models/User.txt')
+  )
+
+  userModelTemplate.overwrite = true
+
+  userModelTemplate.commit()
+  sink.logger.action('create').succeeded(userModelPath)
+
+  /**
+   * UserProfile model
+   */
+  const userProfileModelPath = join(modelsDirectory, 'UserProfile.ts')
+  const userProfileModelTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    userModelPath,
+    getStub('templates/app/models/UserProfile.txt')
+  )
+
+  userProfileModelTemplate.overwrite = true
+
+  userProfileModelTemplate.commit()
+  sink.logger.action('create').succeeded(userProfileModelPath)
+
+  /**
+   * ApiToken model
+   */
+  const apiTokenModelPath = join(modelsDirectory, 'ApiToken.ts')
+  const apiTokenModelTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    userModelPath,
+    getStub('templates/app/models/ApiToken.txt')
+  )
+
+  apiTokenModelTemplate.overwrite = true
+
+  apiTokenModelTemplate.commit()
+  sink.logger.action('create').succeeded(apiTokenModelPath)
+
+  /**
+   * UserSession model
+   */
+  const userSessionModelPath = join(modelsDirectory, 'UserSession.ts')
+  const userSessionModelTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    userModelPath,
+    getStub('templates/app/models/UserSession.txt')
+  )
+
+  userSessionModelTemplate.overwrite = true
+
+  userSessionModelTemplate.commit()
+  sink.logger.action('create').succeeded(userSessionModelPath)
+
+  /**
+   * PasswordResetToken model
+   */
+  const passwordResetModelPath = join(modelsDirectory, 'PasswordReset.ts')
+  const passwordResetModelTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    passwordResetModelPath,
+    getStub('templates/app/models/PasswordReset.txt')
+  )
+
+  if (passwordResetModelTemplate.exists()) {
+    sink.logger.action('create').skipped(`${passwordResetModelPath} file already exists`)
+  } else {
+    passwordResetModelTemplate.commit()
+    sink.logger.action('create').succeeded(passwordResetModelPath)
+  }
+}
 
 function makeMigrations(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
 
@@ -49,22 +128,20 @@ export default async function instructions(
   sink: typeof sinkStatic
 ) {
   makeModels(projectRoot, app, sink)
-  makeMigrations(projectRoot, app, sink)
-  makeControllers(projectRoot, app, sink)
-  makeValidators(projectRoot, app, sink)
-  makeViews(projectRoot, app, sink)
-  makeRoutes(projectRoot, app, sink)
-  makeTests(projectRoot, app, sink)
-  makeMiddleware(projectRoot, app, sink)
-  makeEventsContract(projectRoot, app, sink)
-  makeEnums(projectRoot, app, sink)
-
-  //   const options = await sink.getPrompt().multiple('Select the features you want to install', [
-  //     {
-  //       name: 'tailwindcss',
-  //       message: 'Tailwind CSS',
-  //     },
-  //   ])
+  // makeMigrations(projectRoot, app, sink)
+  // makeControllers(projectRoot, app, sink)
+  // makeValidators(projectRoot, app, sink)
+  // makeMiddleware(projectRoot, app, sink)
+  // makeEnums(projectRoot, app, sink)
+  // makeAppProviders(projectRoot, app, sink)
+  // makeConfig(projectRoot, app, sink)
+  // makeProviders(projectRoot, app, sink)
+  // makeEventsContract(projectRoot, app, sink)
+  // makeEvents(projectRoot, app, sink)
+  // makeRoutes(projectRoot, app, sink)
+  // makeResources(projectRoot, app, sink)
+  // makeTests(projectRoot, app, sink)
+  // makeRootFiles(projectRoot, app, sink)
 
   /**
    * Install required dependencies
@@ -72,6 +149,11 @@ export default async function instructions(
   const pkg = new sink.files.PackageJsonFile(projectRoot)
 
   pkg.install('tailwindcss', undefined, true)
+  pkg.install('daisyui', undefined, true)
+  pkg.install('autoprefixer', undefined, true)
+  pkg.install('postcss', undefined, true)
+  pkg.install('postcss-loader', undefined, true)
+  pkg.install('ua-parser-js', undefined, false)
 
   const logLines = [`Installing: ${sink.logger.colors.gray(pkg.getInstalls(true).list.join(', '))}`]
 
