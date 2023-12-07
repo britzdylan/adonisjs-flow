@@ -3,7 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @entryPointScripts('app')
     @entryPointStyles('app')
-    <title>{{ title ? `${title} | ${capitalCase(sentenceCase(env('APP_NAME')))}` :
-        capitalCase(sentenceCase(env('APP_NAME')))
-        }}</title>
+    <title>{{ title ? title + ' | ' + capitalCase(sentenceCase(env('APP_NAME'))) :
+        capitalCase(sentenceCase(env('APP_NAME')))}}
+    </title>
 </head>

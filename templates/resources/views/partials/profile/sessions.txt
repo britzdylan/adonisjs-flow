@@ -18,9 +18,8 @@
                 <b class="text-green-600">This Device</b></span>
             @end
         </div>
-        @set('browserDeleteUrl', `/dashboard/profile/sessions/${item.id}?_method=DELETE`)
         @if(item.id != currentSession)
-        <form class="flex flex-col gap-2 pt-4 w-max ml-auto" action="{{ browserDeleteUrl }}" method="POST">
+        <form class="flex flex-col gap-2 pt-4 w-max ml-auto" action="/dashboard/profile/sessions/{{item.id}}?_method=DELETE" method="POST">
             <button class="btn btn-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-4 h-4">

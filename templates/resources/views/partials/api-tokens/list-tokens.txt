@@ -7,8 +7,8 @@
     @each(item in tokens)
     <div class="flex items-center justify-between gap-3 w-full">
         <p class=" font-bold">{{item.name}}</p>
-        @set('deleteTokenUrl', `/dashboard/api-tokens/${item.id}?_method=DELETE`)
-        <form class="flex flex-col gap-2 pt-4 w-max ml-auto" action="{{ deleteTokenUrl }}" method="POST">
+        <form class="flex flex-col gap-2 pt-4 w-max ml-auto"
+            action="/dashboard/api-tokens/{{item.id}}?_method=DELETE" method="POST">
             <button class="btn btn-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-4 h-4">
