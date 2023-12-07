@@ -1,6 +1,6 @@
 {
   "name": "adonisjs-flow",
-  "version": "0.1.4",
+  "version": "0.1.7",
   "description": "AdonisJS Flow is a application starter kit for AdonisJS that includes a lot of the common features you would need to build a web application.",
   "scripts": {
     "mrm": "mrm --preset=@adonisjs/mrm-preset",
@@ -15,7 +15,8 @@
     "prepublishOnly": "npm run build",
     "lint": "eslint . --ext=.ts",
     "release": "np --no-tests --message=\"chore(release): %s\"",
-    "version": "npm run build"
+    "version": "npm run build",
+    "pack": "npm run build && npm pack"
   },
   "repository": {
     "type": "git",
@@ -108,6 +109,36 @@
           "dest": "events"
         }
       ],
+      "start": [
+        {
+          "src": "start/routes/api-tokens.txt",
+          "dest": "routes/api-tokens.ts"
+        },
+        {
+          "src": "start/routes/api-tokens.txt",
+          "dest": "routes/api-tokens.ts"
+        },
+        {
+          "src": "start/routes/auth.txt",
+          "dest": "routes/auth.ts"
+        },
+        {
+          "src": "start/routes/errors.txt",
+          "dest": "routes/errors.ts"
+        },
+        {
+          "src": "start/routes/profile.txt",
+          "dest": "routes/profile.ts"
+        },
+        {
+          "src": "start/events/auth.txt",
+          "dest": "events/auth.ts"
+        },
+        {
+          "src": "start/events/index.txt",
+          "dest": "events/index.ts"
+        }
+      ],
       "views": [
         {
           "src": "resources/views/auth/confirm-password.txt",
@@ -186,8 +217,8 @@
           "dest": "emails/welcome/plain.edge"
         },
         {
-          "src": "resources/views/errors/not_found.txt",
-          "dest": "errors/not_found.edge"
+          "src": "resources/views/errors/unauthorized.txt",
+          "dest": "errors/unauthorized.edge"
         },
         {
           "src": "resources/views/errors/server-error.txt",
@@ -202,8 +233,8 @@
           "dest": "partials/api-tokens/create-token.edge"
         },
         {
-          "src": "resources/views/partials/api-tokens/list-token.txt",
-          "dest": "partials/api-tokens/list-token.edge"
+          "src": "resources/views/partials/api-tokens/list-tokens.txt",
+          "dest": "partials/api-tokens/list-tokens.edge"
         },
         {
           "src": "resources/views/partials/profile/avatar.txt",
@@ -238,34 +269,146 @@
           "dest": "partials/flashMessages.edge"
         }
       ],
-      "start": [
+      "assets": [
         {
-          "src": "start/routes/api-tokens.txt",
-          "dest": "routes/api-tokens.ts"
+          "src": "resources/css/app.txt",
+          "dest": "resources/css/app.css"
         },
         {
-          "src": "start/routes/api-tokens.txt",
-          "dest": "routes/api-tokens.ts"
+          "src": "resources/js/app.txt",
+          "dest": "resources/js/app.js"
+        }
+      ],
+      "root": [
+        {
+          "src": ".env.txt",
+          "dest": ".env"
         },
         {
-          "src": "start/routes/auth.txt",
-          "dest": "routes/auth.ts"
+          "src": "tailwind.config.txt",
+          "dest": "tailwind.config.js"
+        }
+      ],
+      "providers": [
+        {
+          "src": "providers/SessionDriver/index.txt",
+          "dest": "providers/SessionDriver/index.ts"
+        }
+      ],
+      "migrations": [
+        {
+          "src": "database/migrations/1697024229003_users.txt",
+          "dest": "database/migrations/1697024229003_users.txt"
         },
         {
-          "src": "start/routes/errors.txt",
-          "dest": "routes/errors.ts"
+          "src": "database/migrations/1697025049030_password_resets.txt",
+          "dest": "database/migrations/1697025049030_password_resets.txt"
         },
         {
-          "src": "start/routes/profile.txt",
-          "dest": "routes/profile.ts"
+          "src": "database/migrations/1697025542544_user_sessions.txt",
+          "dest": "database/migrations/1697025542544_user_sessions.txt"
         },
         {
-          "src": "start/events/auth.txt",
-          "dest": "events/auth.ts"
+          "src": "database/migrations/1697027522393_api_tokens.txt",
+          "dest": "database/migrations/1697027522393_api_tokens.txt"
         },
         {
-          "src": "start/events/index.txt",
-          "dest": "events/index.ts"
+          "src": "database/migrations/1697733327219_user_profiles.txt",
+          "dest": "database/migrations/1697733327219_user_profiles.txt"
+        }
+      ],
+      "validators": [
+        {
+          "src": "app/Validators/Auth/RegisterValidator.txt",
+          "dest": "app/Validators/Auth/RegisterValidator.ts"
+        },
+        {
+          "src": "app/Validators/User/PasswordUpdateValidator.txt",
+          "dest": "app/Validators/User/PasswordUpdateValidator.ts"
+        },
+        {
+          "src": "app/Validators/User/PasswordValidator.txt",
+          "dest": "app/Validators/User/PasswordValidator.ts"
+        },
+        {
+          "src": "app/Validators/User/ProfileValidator.txt",
+          "dest": "app/Validators/User/ProfileValidator.ts"
+        }
+      ],
+      "services": [
+        {
+          "src": "app/Providers/EmailSendingProvider.txt",
+          "dest": "app/Providers/EmailSendingProvider.ts"
+        },
+        {
+          "src": "app/Providers/ValidationRulesProvider.txt",
+          "dest": "app/Providers/ValidationRulesProvider.ts"
+        }
+      ],
+      "middleware": [
+        {
+          "src": "app/Middleware/ConfirmPassword.txt",
+          "dest": "app/Middleware/ConfirmPassword.ts"
+        },
+        {
+          "src": "app/Middleware/ShareProfile.txt",
+          "dest": "app/Middleware/ShareProfile.ts"
+        },
+        {
+          "src": "app/Middleware/VerificationCheck.txt",
+          "dest": "app/Middleware/VerificationCheck.ts"
+        },
+        {
+          "src": "app/Middleware/Guest.txt",
+          "dest": "app/Middleware/Guest.ts"
+        }
+      ],
+      "Enums": [
+        {
+          "src": "app/Enums/FlashMessages.txt",
+          "dest": "app/Enums/FlashMessages.ts"
+        },
+        {
+          "src": "app/Enums/HttpStatusCodes.txt",
+          "dest": "app/Enums/HttpStatusCodes.ts"
+        },
+        {
+          "src": "app/Enums/MailerPresets.txt",
+          "dest": "app/Enums/MailerPresets.ts"
+        }
+      ],
+      "controllers": [
+        {
+          "src": "app/Controllers/Http/Auth/LoginController.txt",
+          "dest": "app/Controllers/Http/Auth/LoginController.ts"
+        },
+        {
+          "src": "app/Controllers/Http/Auth/PasswordConfirmationController.txt",
+          "dest": "app/Controllers/Http/Auth/PasswordConfirmationController.ts"
+        },
+        {
+          "src": "app/Controllers/Http/Auth/PasswordResetRequestController.txt",
+          "dest": "app/Controllers/Http/Auth/PasswordResetRequestController.ts"
+        },
+        {
+          "src": "app/Controllers/Http/Auth/PasswordResetController.txt",
+          "dest": "app/Controllers/Http/Auth/PasswordResetController.ts"
+        },
+        {
+          "src": "app/Controllers/Http/Auth/RegisterController.txt",
+          "dest": "app/Controllers/Http/Auth/RegisterController.ts"
+        },
+        {
+          "src": "app/Controllers/Http/User/ApiTokensController.txt",
+          "dest": "app/Controllers/Http/User/ApiTokensController.ts"
+        },
+        {
+          "src": "app/Controllers/Http/User/ProfilesController.txt",
+          "dest": "app/Controllers/Http/User/ProfilesController.ts"
+        },
+        {
+          "src": "app/Controllers/Http/User/UsersController.txt",
+          "dest": "app/Controllers/Http/User/UsersController.ts"
         }
       ]
     }
