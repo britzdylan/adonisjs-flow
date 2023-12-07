@@ -1,7 +1,0 @@
-@set('avatarPostURL', `/dashboard/profile/avatar?_method=PUT`)
-
-<form class="flex flex-col gap-2" action="{{ avatarPostURL }}" method="POST" enctype="multipart/form-data">
-    <label for="avatar">Update avatar</label>
-    <input type="file" name="avatar" id="avatar">
-    <input class="btn btn-primary btn-sm w-max" type="submit" value="Upload">
-</form>

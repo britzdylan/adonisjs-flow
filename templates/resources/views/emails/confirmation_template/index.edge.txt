@@ -1,7 +1,0 @@
-<h1>{{ title }}</h1>
-
-<p>{{ description }}</p>
-
-<small>
-    If you have any questions, please contact us.
-</small>

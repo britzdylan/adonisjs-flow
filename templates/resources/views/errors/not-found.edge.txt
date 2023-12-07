@@ -1,9 +1,0 @@
-@layout('layouts/auth')
-
-@section('body')
-<div class="max-w-sm m-auto w-full flex flex-col gap-4">
-    <h1>404</h1>
-    <p class="">Page not found</p>
-    <a href="/dashboard" class="btn btn-primary">Back to dashboard</a>
-</div>
-@end

@@ -1,5 +1,0 @@
-{{ title }}
-
-{{ description }} <a href="{{ url }}">{{ urlText }}</a>
-
-If you did not request a {{ title }}, ignore this message.
