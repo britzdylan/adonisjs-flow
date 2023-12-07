@@ -1,6 +1,6 @@
 {
   "name": "adonisjs-flow",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "AdonisJS Flow is a application starter kit for AdonisJS that includes a lot of the common features you would need to build a web application.",
   "scripts": {
     "mrm": "mrm --preset=@adonisjs/mrm-preset",
@@ -96,5 +96,148 @@
     "yarn": false,
     "contents": "."
   },
-  "main": "index.js"
+  "main": "index.js",
+  "adonisjs": {
+    "instructions": "./build/instructions.js",
+    "instructionsMd": "./build/instructions.md",
+    "templates": {
+      "basePath": "./build/templates",
+      "contracts": [
+        {
+          "src": "contracts/events.txt",
+          "dest": "events"
+        }
+      ],
+      "views": [
+        {
+          "src": "resources/views/auth/confirm-password.txt",
+          "dest": "auth/confirm-password.edge"
+        },
+        {
+          "src": "resources/views/auth/login.txt",
+          "dest": "auth/login.edge"
+        },
+        {
+          "src": "resources/views/auth/password-reset-expired.txt",
+          "dest": "auth/password-reset-expired.edge"
+        },
+        {
+          "src": "resources/views/auth/password-reset-invalid.txt",
+          "dest": "auth/password-reset-invalid.edge"
+        },
+        {
+          "src": "resources/views/auth/password-reset-request.txt",
+          "dest": "auth/password-reset-request.edge"
+        },
+        {
+          "src": "resources/views/auth/password-reset.txt",
+          "dest": "auth/password-reset.edge"
+        },
+        {
+          "src": "resources/views/auth/register.txt",
+          "dest": "auth/register.edge"
+        },
+        {
+          "src": "resources/views/auth/verification.txt",
+          "dest": "auth/verification.edge"
+        },
+        {
+          "src": "resources/views/layouts/main.txt",
+          "dest": "layouts/main.edge"
+        },
+        {
+          "src": "resources/views/layouts/auth.txt",
+          "dest": "layouts/auth.edge"
+        },
+        {
+          "src": "resources/views/dashboard/profile/edit.txt",
+          "dest": "dashboard/profile/edit.edge"
+        },
+        {
+          "src": "resources/views/dashboard/api-token.txt",
+          "dest": "dashboard/api-token.edge"
+        },
+        {
+          "src": "resources/views/dashboard/index.txt",
+          "dest": "dashboard/index.edge"
+        },
+        {
+          "src": "resources/views/emails/confirmation_template/index.txt",
+          "dest": "emails/confirmation_template/index.edge"
+        },
+        {
+          "src": "resources/views/emails/confirmation_template/plain.txt",
+          "dest": "emails/confirmation_template/plain.edge"
+        },
+        {
+          "src": "resources/views/emails/verify_template/index.txt",
+          "dest": "emails/verify_template/index.edge"
+        },
+        {
+          "src": "resources/views/emails/verify_template/plain.txt",
+          "dest": "emails/verify_template/plain.edge"
+        },
+        {
+          "src": "resources/views/emails/welcome/index.txt",
+          "dest": "emails/welcome/index.edge"
+        },
+        {
+          "src": "resources/views/emails/welcome/plain.txt",
+          "dest": "emails/welcome/plain.edge"
+        },
+        {
+          "src": "resources/views/errors/not_found.txt",
+          "dest": "errors/not_found.edge"
+        },
+        {
+          "src": "resources/views/errors/server-error.txt",
+          "dest": "errors/server-error.edge"
+        },
+        {
+          "src": "resources/views/errors/not-found.txt",
+          "dest": "errors/not-found.edge"
+        },
+        {
+          "src": "resources/views/partials/api-tokens/create-token.txt",
+          "dest": "partials/api-tokens/create-token.edge"
+        },
+        {
+          "src": "resources/views/partials/api-tokens/list-token.txt",
+          "dest": "partials/api-tokens/list-token.edge"
+        },
+        {
+          "src": "resources/views/partials/profile/avatar.txt",
+          "dest": "partials/profile/avatar.edge"
+        },
+        {
+          "src": "resources/views/partials/profile/delete.txt",
+          "dest": "partials/profile/delete.edge"
+        },
+        {
+          "src": "resources/views/partials/profile/details.txt",
+          "dest": "partials/profile/details.edge"
+        },
+        {
+          "src": "resources/views/partials/profile/password.txt",
+          "dest": "partials/profile/password.edge"
+        },
+        {
+          "src": "resources/views/partials/profile/sessions.txt",
+          "dest": "partials/profile/sessions.edge"
+        },
+        {
+          "src": "resources/views/partials/header.txt",
+          "dest": "partials/header.edge"
+        },
+        {
+          "src": "resources/views/partials/head.txt",
+          "dest": "partials/head.edge"
+        },
+        {
+          "src": "resources/views/partials/flashMessages.txt",
+          "dest": "partials/flashMessages.edge"
+        }
+      ]
+    }
+  }
 }
