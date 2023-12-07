@@ -100,27 +100,27 @@ function makeModels(projectRoot: string, app: ApplicationContract, sink: typeof 
   }
 }
 
-function makeMigrations(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+// function makeMigrations(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
 
-function makeControllers(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+// function makeControllers(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
 
-function makeValidators(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+// function makeValidators(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
 
-function makeViews(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+// function makeViews(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
 
-function makeRoutes(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+// function makeRoutes(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
 
-function makeTests(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+// function makeTests(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
 
-function makeMiddleware(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+// function makeMiddleware(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
 
-function makeEventsContract(
-  projectRoot: string,
-  app: ApplicationContract,
-  sink: typeof sinkStatic
-) {}
+// function makeEventsContract(
+//   projectRoot: string,
+//   app: ApplicationContract,
+//   sink: typeof sinkStatic
+// ) {}
 
-function makeEnums(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+// function makeEnums(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
 
 export default async function instructions(
   projectRoot: string,

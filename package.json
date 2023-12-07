@@ -1,5 +1,5 @@
 {
-  "name": "@britzdylan/adonisjs-flow",
+  "name": "adonisjs-flow",
   "version": "0.1.0",
   "description": "AdonisJS Flow is a application starter kit for AdonisJS that includes a lot of the common features you would need to build a web application.",
   "scripts": {
@@ -54,8 +54,9 @@
   },
   "files": [
     "build/templates",
-    "build/instructions.md",
-    "build/index.js"
+    "build/instructions.js",
+    "build/README.md",
+    "build/instructions.md"
   ],
   "eslintConfig": {
     "extends": [
@@ -95,5 +96,5 @@
     "yarn": false,
     "contents": "."
   },
-  "dependencies": {}
+  "main": "index.js"
 }
