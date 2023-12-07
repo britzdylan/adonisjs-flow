@@ -42,7 +42,8 @@
     "mrm": "^4.1.22",
     "np": "^8.0.4",
     "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "copyfiles": "^2.4.1"
   },
   "mrmConfig": {
     "core": false,
@@ -94,7 +95,5 @@
     "yarn": false,
     "contents": "."
   },
-  "dependencies": {
-    "copyfiles": "^2.4.1"
-  }
+  "dependencies": {}
 }
