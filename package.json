@@ -269,146 +269,128 @@
           "dest": "partials/flashMessages.edge"
         }
       ],
-      "assets": [
+      "resources": [
         {
           "src": "resources/css/app.txt",
-          "dest": "resources/css/app.css"
+          "dest": "css/app.css"
         },
         {
           "src": "resources/js/app.txt",
-          "dest": "resources/js/app.js"
-        }
-      ],
-      "root": [
-        {
-          "src": ".env.txt",
-          "dest": ".env"
-        },
-        {
-          "src": "tailwind.config.txt",
-          "dest": "tailwind.config.js"
+          "dest": "js/app.js"
         }
       ],
       "providers": [
         {
           "src": "providers/SessionDriver/index.txt",
-          "dest": "providers/SessionDriver/index.ts"
+          "dest": "SessionDriver/index.ts"
         }
       ],
       "migrations": [
         {
           "src": "database/migrations/1697024229003_users.txt",
-          "dest": "database/migrations/1697024229003_users.txt"
+          "dest": "1697024229003_users.txt"
         },
         {
           "src": "database/migrations/1697025049030_password_resets.txt",
-          "dest": "database/migrations/1697025049030_password_resets.txt"
+          "dest": "1697025049030_password_resets.txt"
         },
         {
           "src": "database/migrations/1697025542544_user_sessions.txt",
-          "dest": "database/migrations/1697025542544_user_sessions.txt"
+          "dest": "1697025542544_user_sessions.txt"
         },
         {
           "src": "database/migrations/1697027522393_api_tokens.txt",
-          "dest": "database/migrations/1697027522393_api_tokens.txt"
+          "dest": "1697027522393_api_tokens.txt"
         },
         {
           "src": "database/migrations/1697733327219_user_profiles.txt",
-          "dest": "database/migrations/1697733327219_user_profiles.txt"
+          "dest": "1697733327219_user_profiles.txt"
         }
       ],
-      "validators": [
+      "app": [
         {
           "src": "app/Validators/Auth/RegisterValidator.txt",
-          "dest": "app/Validators/Auth/RegisterValidator.ts"
+          "dest": "Validators/Auth/RegisterValidator.ts"
         },
         {
           "src": "app/Validators/User/PasswordUpdateValidator.txt",
-          "dest": "app/Validators/User/PasswordUpdateValidator.ts"
+          "dest": "Validators/User/PasswordUpdateValidator.ts"
         },
         {
           "src": "app/Validators/User/PasswordValidator.txt",
-          "dest": "app/Validators/User/PasswordValidator.ts"
+          "dest": "Validators/User/PasswordValidator.ts"
         },
         {
           "src": "app/Validators/User/ProfileValidator.txt",
-          "dest": "app/Validators/User/ProfileValidator.ts"
-        }
-      ],
-      "services": [
+          "dest": "Validators/User/ProfileValidator.ts"
+        },
         {
           "src": "app/Providers/EmailSendingProvider.txt",
-          "dest": "app/Providers/EmailSendingProvider.ts"
+          "dest": "Providers/EmailSendingProvider.ts"
         },
         {
           "src": "app/Providers/ValidationRulesProvider.txt",
-          "dest": "app/Providers/ValidationRulesProvider.ts"
-        }
-      ],
-      "middleware": [
+          "dest": "Providers/ValidationRulesProvider.ts"
+        },
         {
           "src": "app/Middleware/ConfirmPassword.txt",
-          "dest": "app/Middleware/ConfirmPassword.ts"
+          "dest": "Middleware/ConfirmPassword.ts"
         },
         {
           "src": "app/Middleware/ShareProfile.txt",
-          "dest": "app/Middleware/ShareProfile.ts"
+          "dest": "Middleware/ShareProfile.ts"
         },
         {
           "src": "app/Middleware/VerificationCheck.txt",
-          "dest": "app/Middleware/VerificationCheck.ts"
+          "dest": "Middleware/VerificationCheck.ts"
         },
         {
           "src": "app/Middleware/Guest.txt",
-          "dest": "app/Middleware/Guest.ts"
-        }
-      ],
-      "Enums": [
+          "dest": "Middleware/Guest.ts"
+        },
         {
           "src": "app/Enums/FlashMessages.txt",
-          "dest": "app/Enums/FlashMessages.ts"
+          "dest": "Enums/FlashMessages.ts"
         },
         {
           "src": "app/Enums/HttpStatusCodes.txt",
-          "dest": "app/Enums/HttpStatusCodes.ts"
+          "dest": "Enums/HttpStatusCodes.ts"
         },
         {
           "src": "app/Enums/MailerPresets.txt",
-          "dest": "app/Enums/MailerPresets.ts"
-        }
-      ],
-      "controllers": [
+          "dest": "Enums/MailerPresets.ts"
+        },
         {
           "src": "app/Controllers/Http/Auth/LoginController.txt",
-          "dest": "app/Controllers/Http/Auth/LoginController.ts"
+          "dest": "Controllers/Http/Auth/LoginController.ts"
         },
         {
           "src": "app/Controllers/Http/Auth/PasswordConfirmationController.txt",
-          "dest": "app/Controllers/Http/Auth/PasswordConfirmationController.ts"
+          "dest": "Controllers/Http/Auth/PasswordConfirmationController.ts"
         },
         {
           "src": "app/Controllers/Http/Auth/PasswordResetRequestController.txt",
-          "dest": "app/Controllers/Http/Auth/PasswordResetRequestController.ts"
+          "dest": "Controllers/Http/Auth/PasswordResetRequestController.ts"
         },
         {
           "src": "app/Controllers/Http/Auth/PasswordResetController.txt",
-          "dest": "app/Controllers/Http/Auth/PasswordResetController.ts"
+          "dest": "Controllers/Http/Auth/PasswordResetController.ts"
         },
         {
           "src": "app/Controllers/Http/Auth/RegisterController.txt",
-          "dest": "app/Controllers/Http/Auth/RegisterController.ts"
+          "dest": "Controllers/Http/Auth/RegisterController.ts"
         },
         {
           "src": "app/Controllers/Http/User/ApiTokensController.txt",
-          "dest": "app/Controllers/Http/User/ApiTokensController.ts"
+          "dest": "Controllers/Http/User/ApiTokensController.ts"
         },
         {
           "src": "app/Controllers/Http/User/ProfilesController.txt",
-          "dest": "app/Controllers/Http/User/ProfilesController.ts"
+          "dest": "Controllers/Http/User/ProfilesController.ts"
         },
         {
           "src": "app/Controllers/Http/User/UsersController.txt",
-          "dest": "app/Controllers/Http/User/UsersController.ts"
+          "dest": "Controllers/Http/User/UsersController.ts"
         }
       ]
     }
