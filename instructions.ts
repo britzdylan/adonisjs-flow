@@ -100,48 +100,378 @@ function makeModels(projectRoot: string, app: ApplicationContract, sink: typeof 
   }
 }
 
-// function makeMigrations(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+function makeControllers(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {
+  const controllersAuthDirectory =
+    app.resolveNamespaceDirectory('controllers') || 'app/Controllers/Http/Auth'
+  const controllersUserDirectory =
+    app.resolveNamespaceDirectory('controllers') || 'app/Controllers/Http/User'
 
-// function makeControllers(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+  /**
+   * Login Controller
+   */
+  const loginControllerPath = join(controllersAuthDirectory, 'LoginController.ts')
+  const loginControllerTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    loginControllerPath,
+    getStub('app/controllers/Http/Auth/LoginController.txt')
+  )
 
-// function makeValidators(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+  loginControllerTemplate.overwrite = true
 
-// function makeViews(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+  loginControllerTemplate.commit()
+  sink.logger.action('create').succeeded(loginControllerPath)
 
-// function makeRoutes(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+  /**
+   * PasswordConfirmation Controller
+   */
+  const passwordConfirmationPath = join(controllersAuthDirectory, 'PasswordConfirmation.ts')
+  const passwordConfirmationTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    passwordConfirmationPath,
+    getStub('app/controllers/Http/Auth/PasswordConfirmation.txt')
+  )
 
-// function makeTests(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+  passwordConfirmationTemplate.overwrite = true
 
-// function makeMiddleware(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+  passwordConfirmationTemplate.commit()
+  sink.logger.action('create').succeeded(passwordConfirmationPath)
 
-// function makeEventsContract(
-//   projectRoot: string,
-//   app: ApplicationContract,
-//   sink: typeof sinkStatic
-// ) {}
+  /**
+   * PasswordReset Controller
+   */
+  const passwordResetPath = join(controllersAuthDirectory, 'PasswordResetController.ts')
+  const passwordResetTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    passwordResetPath,
+    getStub('app/controllers/Http/Auth/PasswordResetController.txt')
+  )
 
-// function makeEnums(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {}
+  passwordResetTemplate.overwrite = true
+
+  passwordResetTemplate.commit()
+  sink.logger.action('create').succeeded(passwordResetPath)
+
+  /**
+   * PasswordResetRequestController
+   */
+  const passwordResetControllerPath = join(
+    controllersAuthDirectory,
+    'PasswordResetRequestController.ts'
+  )
+  const passwordResetControllerTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    passwordResetControllerPath,
+    getStub('app/controllers/Http/Auth/PasswordResetRequestController.txt')
+  )
+
+  passwordResetControllerTemplate.overwrite = true
+
+  passwordResetControllerTemplate.commit()
+  sink.logger.action('create').succeeded(passwordResetControllerPath)
+
+  /**
+   * Register Controller
+   */
+  const RegisterControllerPath = join(controllersAuthDirectory, 'RegisterController.ts')
+  const RegisterControllerTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    RegisterControllerPath,
+    getStub('app/controllers/Http/Auth/RegisterController.txt')
+  )
+
+  RegisterControllerTemplate.overwrite = true
+
+  RegisterControllerTemplate.commit()
+  sink.logger.action('create').succeeded(RegisterControllerPath)
+
+  /**
+   * Profiles Controller
+   */
+  const ProfilesControllerPath = join(controllersUserDirectory, 'ProfilesController.ts')
+  const ProfilesControllerTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    ProfilesControllerPath,
+    getStub('app/controllers/Http/User/ProfilesController.txt')
+  )
+
+  ProfilesControllerTemplate.overwrite = true
+
+  ProfilesControllerTemplate.commit()
+  sink.logger.action('create').succeeded(ProfilesControllerPath)
+
+  /**
+   * ApiTokens Controller
+   */
+  const apiTokensControllerPath = join(controllersUserDirectory, 'ApiTokensController.ts')
+  const apiTokensControllerTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    apiTokensControllerPath,
+    getStub('app/controllers/Http/User/ApiTokensController.txt')
+  )
+
+  apiTokensControllerTemplate.overwrite = true
+
+  apiTokensControllerTemplate.commit()
+  sink.logger.action('create').succeeded(apiTokensControllerPath)
+
+  /**
+   * Users Controller
+   */
+  const usersControllerPath = join(controllersUserDirectory, 'UsersController.ts')
+  const usersControllerTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    usersControllerPath,
+    getStub('app/controllers/Http/User/UsersController.txt')
+  )
+
+  usersControllerTemplate.overwrite = true
+
+  usersControllerTemplate.commit()
+  sink.logger.action('create').succeeded(usersControllerPath)
+}
+
+function makeEnums(projectRoot: string, sink: typeof sinkStatic) {
+  const enumsDirectory = 'app/Enums'
+
+  /**
+   * FlashMessage enum
+   */
+  const FlashMessagePath = join(enumsDirectory, 'FlashMessage.ts')
+  const FlashMessageTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    FlashMessagePath,
+    getStub('app/Enums/FlashMessage.txt')
+  )
+
+  FlashMessageTemplate.overwrite = true
+
+  FlashMessageTemplate.commit()
+  sink.logger.action('create').succeeded(FlashMessagePath)
+
+  /**
+   * HttpStatusCodes enum
+   */
+  const httpStatusCodesPath = join(enumsDirectory, 'HttpStatusCodes.ts')
+  const httpStatusCodesTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    httpStatusCodesPath,
+    getStub('app/Enums/HttpStatusCodes.txt')
+  )
+
+  httpStatusCodesTemplate.overwrite = true
+
+  httpStatusCodesTemplate.commit()
+  sink.logger.action('create').succeeded(httpStatusCodesPath)
+
+  /**
+   * MailerPresets enum
+   */
+  const mailerPresetsPath = join(enumsDirectory, 'MailerPresets.ts')
+  const mailerPresetsTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    mailerPresetsPath,
+    getStub('app/Enums/MailerPresets.txt')
+  )
+
+  mailerPresetsTemplate.overwrite = true
+
+  mailerPresetsTemplate.commit()
+  sink.logger.action('create').succeeded(mailerPresetsPath)
+}
+
+function makeException(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {
+  const exceptionsPath = app.resolveNamespaceDirectory('exceptions') || 'app/Exceptions'
+
+  /**
+   * Handler enum
+   */
+  const handlerPath = join(exceptionsPath, 'Handler.ts')
+  const handlerTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    handlerPath,
+    getStub('app/Exceptions/Handler.txt')
+  )
+
+  handlerTemplate.overwrite = true
+
+  handlerTemplate.commit()
+  sink.logger.action('create').succeeded(handlerPath)
+}
+
+function makeMiddleware(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {
+  const middlewarePath = app.resolveNamespaceDirectory('middleware') || 'app/Middleware'
+
+  /**
+   * ConfirmPassword middleware
+   */
+  const confirmPasswordPath = join(middlewarePath, 'ConfirmPassword.ts')
+  const confirmPasswordTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    confirmPasswordPath,
+    getStub('app/Middleware/ConfirmPassword.txt')
+  )
+
+  confirmPasswordTemplate.overwrite = true
+
+  confirmPasswordTemplate.commit()
+  sink.logger.action('create').succeeded(confirmPasswordPath)
+
+  /**
+   * Guest middleware
+   */
+  const guestPath = join(middlewarePath, 'Guest.ts')
+  const guestTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    guestPath,
+    getStub('app/Middleware/Guest.txt')
+  )
+
+  guestTemplate.overwrite = true
+
+  guestTemplate.commit()
+  sink.logger.action('create').succeeded(guestPath)
+
+  /**
+   * ShareProfile middleware
+   */
+  const shareProfilePath = join(middlewarePath, 'ShareProfile.ts')
+  const shareProfileTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    shareProfilePath,
+    getStub('app/Middleware/ShareProfile.txt')
+  )
+
+  shareProfileTemplate.overwrite = true
+
+  shareProfileTemplate.commit()
+  sink.logger.action('create').succeeded(shareProfilePath)
+
+  /**
+   * VerificationCheck middleware
+   */
+  const verificationCheckPath = join(middlewarePath, 'VerificationCheck.ts')
+  const verificationCheckTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    verificationCheckPath,
+    getStub('app/Middleware/VerificationCheck.txt')
+  )
+
+  verificationCheckTemplate.overwrite = true
+
+  verificationCheckTemplate.commit()
+  sink.logger.action('create').succeeded(verificationCheckPath)
+}
+
+function makeServiceProviders(projectRoot: string, sink: typeof sinkStatic) {
+  const providerPath = 'app/Providers'
+
+  /**
+   * EmailSendingProvider middleware
+   */
+  const emailSendingPath = join(providerPath, 'EmailSendingProvider.ts')
+  const emailSendingTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    emailSendingPath,
+    getStub('app/Providers/EmailSendingProvider.txt')
+  )
+
+  emailSendingTemplate.overwrite = true
+
+  emailSendingTemplate.commit()
+  sink.logger.action('create').succeeded(emailSendingPath)
+
+  /**
+   * ValidationRulesProvider middleware
+   */
+  const validationRulesPath = join(providerPath, 'ValidationRulesProvider.ts')
+  const validationRulesTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    validationRulesPath,
+    getStub('app/Providers/ValidationRulesProvider.txt')
+  )
+
+  validationRulesTemplate.overwrite = true
+
+  validationRulesTemplate.commit()
+  sink.logger.action('create').succeeded(validationRulesPath)
+}
+
+function makeValidators(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {
+  const validatorsPath = app.resolveNamespaceDirectory('validators') || 'app/Validators'
+
+  /**
+   * RegisterValidator
+   */
+  const registerPath = join(validatorsPath, 'RegisterValidator.ts')
+  const registerTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    registerPath,
+    getStub('app/Providers/Auth/RegisterValidator.txt')
+  )
+
+  registerTemplate.overwrite = true
+
+  registerTemplate.commit()
+  sink.logger.action('create').succeeded(registerPath)
+
+  /**
+   * PasswordUpdateValidator
+   */
+  const passwordUpdatePath = join(validatorsPath, 'PasswordUpdateValidator.ts')
+  const passwordUpdateTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    passwordUpdatePath,
+    getStub('app/Providers/User/PasswordUpdateValidator.txt')
+  )
+
+  passwordUpdateTemplate.overwrite = true
+
+  passwordUpdateTemplate.commit()
+  sink.logger.action('create').succeeded(passwordUpdatePath)
+
+  /**
+   * PasswordValidator
+   */
+  const passwordPath = join(validatorsPath, 'PasswordValidator.ts')
+  const passwordTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    passwordPath,
+    getStub('app/Providers/User/PasswordValidator.txt')
+  )
+
+  passwordTemplate.overwrite = true
+
+  passwordTemplate.commit()
+  sink.logger.action('create').succeeded(passwordPath)
+
+  /**
+   * ProfileValidator
+   */
+  const profilePath = join(validatorsPath, 'ProfileValidator.ts')
+  const profileTemplate = new sink.files.MustacheFile(
+    projectRoot,
+    profilePath,
+    getStub('app/Providers/User/ProfileValidator.txt')
+  )
+
+  profileTemplate.overwrite = true
+
+  profileTemplate.commit()
+  sink.logger.action('create').succeeded(profilePath)
+}
 
 export default async function instructions(
   projectRoot: string,
   app: ApplicationContract,
   sink: typeof sinkStatic
 ) {
+  makeControllers(projectRoot, app, sink)
+  makeEnums(projectRoot, sink)
+  makeException(projectRoot, app, sink)
+  makeMiddleware(projectRoot, app, sink)
   makeModels(projectRoot, app, sink)
-  // makeMigrations(projectRoot, app, sink)
-  // makeControllers(projectRoot, app, sink)
-  // makeValidators(projectRoot, app, sink)
-  // makeMiddleware(projectRoot, app, sink)
-  // makeEnums(projectRoot, app, sink)
-  // makeAppProviders(projectRoot, app, sink)
-  // makeConfig(projectRoot, app, sink)
-  // makeProviders(projectRoot, app, sink)
-  // makeEventsContract(projectRoot, app, sink)
-  // makeEvents(projectRoot, app, sink)
-  // makeRoutes(projectRoot, app, sink)
-  // makeResources(projectRoot, app, sink)
-  // makeTests(projectRoot, app, sink)
-  // makeRootFiles(projectRoot, app, sink)
+  makeServiceProviders(projectRoot, sink)
+  makeValidators(projectRoot, app, sink)
 
   /**
    * Install required dependencies
