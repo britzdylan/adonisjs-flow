@@ -1,29 +1,60 @@
 # Welcome to Adonis Flow
 
+Adonis Flow is a full stack application scaffolding for [AdonisJs](https://adonisjs.com). Adonis Flow provides the perfect starting point for your next Adonisjs application and includes login, registration, email verification, profile management, session management, Api Token management, and transactional emails.
+
+Adonis is designed using Tailwind CSS and [Edgejs](https://edgejs.dev/docs/introduction) scaffolding.
+
+## Official Documentation
+
+Documentation for Adonis Flow is in progress.
+
+## Contributing
+
+Thank you for considering contributing to Adonis Flow! But unfortunately contributions are not accepted at this time as this is a personal project. However contributions will be accepted in the future once the project is more mature.
+
+## Prerequisites
+
+_New Applications Only_
+
+Adonis Flow should only be installed into new AdonisJs applications. Attempting to install Adonis Flow into an existing AdonisJs application will result in unexpected behavior and issues. In addition to that, your application should already have the following packages installed and configred:
+
+Encore (can be easily done at the point of creating the application)
+Lucid
+Auth
+Drive
+Mail
+Session
+attachment-lite
+
+_Database_
+
+Adonis Flow is designed to work with Postgres. However, it should be possible to use other databases with some minor changes.
+
 ## Getting Started
 
-- [Installation](##installation)
-- [Usage](#usage)
-- [Commands](#commands)
-- [Examples](#examples)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Installation
+### Installation
 
 ```bash
-npm install -d adonis-flow
+npm install adonisjs-flow
+
+# or
+yarn add adonisjs-flow
+
+# or
+pnpm add adonisjs-flow
 ```
 
-## Usage
+Next, configure the package using the configure command:
 
 ```bash
 node ace configure adonisjs-flow
 ```
 
-### Setup
+This will scaffold and create the necessary files.
 
-- Setup Adonis Flow configuration file
+### Usage
+
+Before you can use Adonis Flow you need to update the following files inside your AdonisJs application:
 
 ```ts
 // config/flow.ts
@@ -46,6 +77,12 @@ const flowConfig: FlowConfig = {
 |--------------------------------------------------------------------------
 |
 | Configure optional features for AdonisJs Flow
+
+| termsAndPrivacyPolicy - not implemented yet
+|
+| verification - Allows you to configure how strict you want to be with email verification. Options are: strict, optional - strict forces users to verify their email before they can login, optional allows users to login without verifying their email.
+|
+| passwordConfirmation - Used alongside the password confirmation middleware. This is the number of minutes that the password confirmation is valid for. after this time the user will be prompted to confirm their password again for sensitive actions such as deleting their account. To make use of this feature you need to add the password confirmation middleware to your routes.
 |
 */
   features: {
@@ -59,8 +96,7 @@ const flowConfig: FlowConfig = {
 |--------------------------------------------------------------------------
 |
 | The views config is to handle all your view template file locations 
-| in one convenient place, without needing to go digging inside the controllers, providers etc.to make 
-| small updates
+| in one convenient place, without needing to go digging inside the controllers, providers etc.to make small updates
 |
 */
   views: {
@@ -77,42 +113,34 @@ const flowConfig: FlowConfig = {
   },
 }
 
-interface FlowFeatures {
-  termsAndPrivacyPolicy: boolean
-  verification: 'strict' | 'relaxed'
-  passwordConfirmation: MinuteNumbers
-}
-
-interface FlowViews {
-  login: string
-  register: string
-  verification: string
-  passwordResetRequest: string
-  passwordReset: string
-  signedUrlInvalid: string
-  confirmPassword: string
-  dashboard: string
-  profile: string
-  apiTokens: string
-}
-
-interface FlowConfig {
-  stack: 'edge' | 'inertia'
-  features: FlowFeatures
-  views: FlowViews
-}
-
 export default flowConfig
 ```
 
-- Setup your .env file
+Enable postcss in your webpack config
+
+```ts
+// webpack.config.ts
+/*
+|--------------------------------------------------------------------------
+| CSS loaders
+|--------------------------------------------------------------------------
+|
+| Uncomment one of the following line of code to enable support for
+| PostCSS or CSS.
+|
+*/
+Encore.enablePostCssLoader()
+// Encore.configureCssLoader(() => {})
+```
+
+Setup your .env file
 
 ```
 PORT=3333
 HOST=0.0.0.0
 NODE_ENV=development
 APP_URL=http://${HOST}:${PORT}
-APP_KEY=YU0zZ7cD14XyEtl5xjU1tlSUo1_pgjs0
+APP_KEY=app_key
 DRIVE_DISK=local
 SESSION_DRIVER=cookie
 CACHE_VIEWS=false
@@ -135,7 +163,7 @@ SMTP_PASSWORD=<password>
 
 ```
 
-- Setup tailwind config
+Setup tailwind config
 
 ```ts
 // tailwind.config.js
@@ -152,7 +180,16 @@ module.exports = {
 }
 ```
 
-- Configure the custom session provider
+Setup postcss config
+
+```ts
+// postcss.config.js
+module.exports = {
+  plugins: [require('tailwindcss')()],
+}
+```
+
+Configure the custom session provider
 
 ```ts
 // providers/AppProvider.ts
@@ -184,7 +221,7 @@ export default class AppProvider {
 }
 ```
 
-- Configure your events contract
+Configure your events contract
 
 ```ts
 // contracts/events.ts
@@ -231,3 +268,7 @@ declare module '@ioc:Adonis/Core/Event' {
   }
 }
 ```
+
+## License
+
+Adonis Flow is open-sourced software licensed under the MIT license.
