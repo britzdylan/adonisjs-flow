@@ -13,3 +13,4 @@ dist
 shrinkwrap.yaml
 .app
 TODO.txt
+*.tgz
