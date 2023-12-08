@@ -283,6 +283,10 @@
         {
           "src": "providers/SessionDriver/index.txt",
           "dest": "SessionDriver/index.ts"
+        },
+        {
+          "src": "providers/AppProvider.txt",
+          "dest": "AppProvider.ts"
         }
       ],
       "migrations": [
