@@ -124,11 +124,11 @@ function makeControllers(projectRoot: string, app: ApplicationContract, sink: ty
   /**
    * PasswordConfirmation Controller
    */
-  const passwordConfirmationPath = join(controllersAuthDirectory, 'PasswordConfirmation.ts')
+  const passwordConfirmationPath = join(controllersAuthDirectory, 'PasswordConfirmationController.ts')
   const passwordConfirmationTemplate = new sink.files.MustacheFile(
     projectRoot,
     passwordConfirmationPath,
-    getStub('app/controllers/Http/Auth/PasswordConfirmation.txt')
+    getStub('app/controllers/Http/Auth/PasswordConfirmationController.txt')
   )
 
   passwordConfirmationTemplate.overwrite = true
@@ -406,7 +406,7 @@ function makeValidators(projectRoot: string, app: ApplicationContract, sink: typ
   const registerTemplate = new sink.files.MustacheFile(
     projectRoot,
     registerPath,
-    getStub('app/Providers/Auth/RegisterValidator.txt')
+    getStub('app/Validators/Auth/RegisterValidator.txt')
   )
 
   registerTemplate.overwrite = true
@@ -421,7 +421,7 @@ function makeValidators(projectRoot: string, app: ApplicationContract, sink: typ
   const passwordUpdateTemplate = new sink.files.MustacheFile(
     projectRoot,
     passwordUpdatePath,
-    getStub('app/Providers/User/PasswordUpdateValidator.txt')
+    getStub('app/Validators/User/PasswordUpdateValidator.txt')
   )
 
   passwordUpdateTemplate.overwrite = true
@@ -436,7 +436,7 @@ function makeValidators(projectRoot: string, app: ApplicationContract, sink: typ
   const passwordTemplate = new sink.files.MustacheFile(
     projectRoot,
     passwordPath,
-    getStub('app/Providers/User/PasswordValidator.txt')
+    getStub('app/Validators/User/PasswordValidator.txt')
   )
 
   passwordTemplate.overwrite = true
@@ -451,7 +451,7 @@ function makeValidators(projectRoot: string, app: ApplicationContract, sink: typ
   const profileTemplate = new sink.files.MustacheFile(
     projectRoot,
     profilePath,
-    getStub('app/Providers/User/ProfileValidator.txt')
+    getStub('app/Validators/User/ProfileValidator.txt')
   )
 
   profileTemplate.overwrite = true
@@ -472,6 +472,7 @@ export default async function instructions(
   makeModels(projectRoot, app, sink)
   makeServiceProviders(projectRoot, sink)
   makeValidators(projectRoot, app, sink)
+  // makeCustomErrorPages(projectRoot, sink)
 
   /**
    * Install required dependencies
