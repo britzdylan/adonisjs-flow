@@ -1,6 +1,6 @@
 {
   "name": "adonisjs-flow",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "description": "AdonisJS Flow is a application starter kit for AdonisJS that includes a lot of the common features you would need to build a web application.",
   "scripts": {
     "mrm": "mrm --preset=@adonisjs/mrm-preset",
@@ -110,10 +110,6 @@
         }
       ],
       "start": [
-        {
-          "src": "start/routes/api-tokens.txt",
-          "dest": "routes/api-tokens.ts"
-        },
         {
           "src": "start/routes/api-tokens.txt",
           "dest": "routes/api-tokens.ts"
@@ -283,10 +279,6 @@
         {
           "src": "providers/SessionDriver/index.txt",
           "dest": "SessionDriver/index.ts"
-        },
-        {
-          "src": "providers/AppProvider.txt",
-          "dest": "AppProvider.ts"
         }
       ],
       "migrations": [
