@@ -1,0 +1,35 @@
+<template>
+  <div class="input-wrapper">
+    <label v-if="label" :for="id"
+      >{{ label }}
+      <span v-if="helpText" class="text-xs text-gray-500">({{ helpText }})</span></label
+    >
+    <slot>
+      <InputText
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
+        :placeholder="placeholder"
+        :aria-describedby="`${id}-help`"
+        :type="type"
+        :name="id"
+      />
+    </slot>
+    <small class="sr-only" :id="`${id}-help`">{{ srText }}</small>
+    <small v-show="validation" class="text-red-500">{{ validation }}</small>
+  </div>
+</template>
+
+<script setup lang="ts">
+defineProps<{
+  label?: string
+  id: string
+  type: string
+  placeholder?: string
+  validation?: string
+  modelValue: string
+  srText: string
+  helpText?: string
+}>()
+
+defineEmits(['update:modelValue'])
+</script>

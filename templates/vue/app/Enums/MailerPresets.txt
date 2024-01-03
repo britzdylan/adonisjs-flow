@@ -1,0 +1,30 @@
+enum MailerDefaults {
+  FROM = 'britzdylan@gmail.com',
+  CC = '',
+
+  WELCOME_SUBJECT = 'Welcome aboard: Confirm your email',
+
+  RESET_PASSWORD_SUBJECT = 'Reset your password',
+  RESET_PASSWORD_TITLE = 'Reset your password',
+  RESET_PASSWORD_MESSAGE = 'Click the following link to reset your password',
+  RESET_PASSWORD_URL_TEXT = 'Reset password',
+
+  RESET_PASSWORD_SUCCESS_SUBJECT = 'Your password has been reset',
+  RESET_PASSWORD_SUCCESS_TITLE = 'Password reset successfully',
+  RESET_PASSWORD_SUCCESS_MESSAGE = 'Your password has been reset',
+
+  EMAIL_VERIFICATION_SUBJECT = 'Verify your email',
+  EMAIL_VERIFICATION_TITLE = 'Verify your email',
+  EMAIL_VERIFICATION_MESSAGE = 'Verify your email',
+
+  EMAIL_UPDATE_SUBJECT = 'Confirmation: Update your email',
+  EMAIL_UPDATE_TITLE = 'Confirm your new email',
+  EMAIL_UPDATE_MESSAGE = 'Click the following link to confirm your new email',
+  EMAIL_UPDATE_URL_TEXT = 'Confirm new email',
+
+  USER_DELETE_SUBJECT = 'Confirmation of your account deletion',
+  USER_DELETE_TITLE = 'Your account has been deleted',
+  USER_DELETE_MESSAGE = 'Your account has been permanently deleted, and all your data has been removed from our servers.',
+}
+
+export default MailerDefaults

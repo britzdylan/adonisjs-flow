@@ -1,0 +1,140 @@
+<template>
+  <section class="grid grid-cols-12 gap-12 w-full">
+    <PageHeader>Manage your profile</PageHeader>
+    <div class="profile-menu-aside">
+      <template v-for="(tab, index) in tabs">
+        <Button
+          v-if="!isActive(tab.name)"
+          @click="changeTab(tab.name)"
+          text
+          class="custom-menu-button"
+          ><p class="font-semibold text-sm text-left w-full dark:text-white/70 text-black/70">
+            {{ tab.label }}
+          </p></Button
+        >
+        <Button @click="changeTab(tab.name)" v-else plain class="custom-menu-button"
+          ><p class="font-semibold text-sm text-left w-full">
+            {{ tab.label }}
+          </p></Button
+        >
+      </template>
+    </div>
+    <div class="profile-section">
+      <ProfileAvatarForm
+        v-if="currentTab === 'ProfileDetailsForm'"
+        name="ProfileAvatarForm"
+        label="Profile Avatar"
+        :formUrl="formUrls.updateProfileAvatar"
+      />
+      <hr v-if="currentTab === 'ProfileDetailsForm'" />
+      <KeepAlive>
+        <component v-bind="resolveBindings()" :is="tabComponent[currentTab]"></component>
+      </KeepAlive>
+    </div>
+  </section>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import ProfileDetailsForm from 'Components/Composites/ProfileDetailsForm.vue'
+import ProfilePasswordForm from 'Components/Composites/ProfilePasswordForm.vue'
+import ProfileSessionsForm from 'Components/Composites/ProfileSessionsForm.vue'
+import ProfileDeleteForm from 'Components/Composites/ProfileDeleteForm.vue'
+import { usePage } from '@inertiajs/vue3'
+import ProfileAvatarForm from 'Components/Composites/ProfileAvatarForm.vue'
+import ProfileApiTokensForm from '../../Components/Composites/ProfileApiTokens.vue'
+
+const props = defineProps<{
+  profile: any
+  sessions: any
+  currentSession: any
+  tokens: any
+  formUrls: {
+    updateProfile: string
+    updateProfileAvatar: string
+    deleteProfile: string
+    passwordUpdate: string
+    addToken: string
+  }
+}>()
+
+const currentTab = ref('ProfileDetailsForm')
+
+const tabs = [
+  {
+    name: 'ProfileDetailsForm',
+    label: 'Profile',
+    formUrl: props.formUrls.updateProfile,
+  },
+  {
+    name: 'ProfilePasswordForm',
+    label: 'Password',
+    formUrl: props.formUrls.passwordUpdate,
+  },
+  {
+    name: 'ProfileSessionsForm',
+    label: 'Sessions',
+  },
+  {
+    name: 'ProfileApiTokensForm',
+    label: 'Api Tokens',
+    formUrl: props.formUrls.addToken,
+  },
+  {
+    name: 'ProfileDeleteForm',
+    label: 'Security',
+    formUrl: props.formUrls.deleteProfile,
+  },
+]
+
+const tabComponent = {
+  ProfileDetailsForm,
+  ProfilePasswordForm,
+  ProfileSessionsForm,
+  ProfileDeleteForm,
+  ProfileApiTokensForm,
+}
+
+const user = computed(() => {
+  return usePage().props.user
+})
+
+const changeTab = (tab: string) => {
+  currentTab.value = tab
+}
+
+const isActive = (tab: string) => {
+  return currentTab.value === tab
+}
+
+const resolveBindings = () => {
+  return {
+    name: tabs.find((tab) => tab.name === currentTab.value)?.name,
+    label: tabs.find((tab) => tab.name === currentTab.value)?.label,
+    formUrl: tabs.find((tab) => tab.name === currentTab.value)?.formUrl,
+    profile: props.profile,
+    user: user.value,
+    sessions: props.sessions,
+    currentSession: props.currentSession,
+    tokens: props.tokens,
+  }
+}
+</script>
+
+<style scoped>
+.profile-menu-aside {
+  @apply flex flex-col gap-4 col-span-3;
+}
+
+.custom-menu-button {
+  @apply flex w-full text-left px-3.5 py-2.5 h-max;
+}
+
+.profile-section {
+  @apply col-span-9 dark:text-white  flex flex-col gap-4;
+}
+
+.profile-section > * {
+  @apply max-w-2xl w-full;
+}
+</style>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  @include('partials/meta')
+  @inertiaHead
+</head>
+
+<body class="bg-surface-0 dark:bg-surface-950">
+  @inertia
+</body>
+
+</html>

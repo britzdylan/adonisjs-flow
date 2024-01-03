@@ -1,0 +1,90 @@
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import flowConfig from 'Config/flow'
+
+export default class ValidationRulesProvider {
+  private email = {
+    required: schema.string({ trim: true }, [
+      rules.email(),
+      rules.unique({ table: 'users', column: 'email' }),
+    ]),
+    optional: schema.string.optional({ trim: true }, [
+      rules.email(),
+      rules.unique({ table: 'users', column: 'email' }),
+    ]),
+    notUnique: schema.string({ trim: true }, [rules.email()]),
+  }
+
+  private password = {
+    requiredConfirmed: schema.string({}, [
+      rules.minLength(8),
+      rules.alphaNum(),
+      rules.trim(),
+      rules.confirmed(),
+    ]),
+    required: schema.string({}, [rules.minLength(8), rules.alphaNum(), rules.trim()]),
+  }
+
+  protected registerRules() {
+    if (flowConfig.features.termsAndPrivacyPolicy) {
+      return {
+        email: this.email.required,
+        password: this.password.requiredConfirmed,
+        terms: schema.array([rules.maxLength(1), rules.minLength(1)]).members(schema.boolean()),
+      }
+    } else {
+      return {
+        email: this.email.required,
+        password: this.password.requiredConfirmed,
+        terms: schema.boolean.nullableAndOptional(),
+      }
+    }
+  }
+
+  protected passwordResetRules() {
+    return {
+      password: this.password.required,
+    }
+  }
+
+  protected passwordUpdateRules() {
+    return {
+      currentPassword: schema.string({ trim: true }, []),
+      password: this.password.required,
+    }
+  }
+
+  protected profileUpdateRules() {
+    return {
+      firstName: schema.string({ trim: true }, [rules.maxLength(255)]),
+      lastName: schema.string({ trim: true }, [rules.maxLength(255)]),
+      email: this.email.notUnique,
+    }
+  }
+
+  protected emailVerificationRules() {
+    return {
+      email: this.email.notUnique,
+    }
+  }
+
+  protected apiTokenRules() {
+    return {
+      name: schema.string({ trim: true }, [rules.maxLength(255)]),
+      expiresIn: schema.enum(['1 day', '7 days', '30 days', '90 days', null] as const),
+    }
+  }
+
+  //  Messages
+
+  public messages = {
+    'email.required': 'Email is required',
+    'email.email': 'Email is not valid',
+    'password.required': 'Password is required',
+    'password.minLength': 'Password must be at least 8 characters long',
+    'unique': '{{ field }} is not available',
+    'confirmed': 'Passwords does not match',
+    'email.unique': 'Email is already in use',
+    'terms.required': 'You must agree to the terms and conditions',
+    'terms.minLength': 'You must agree to the terms and conditions',
+  }
+}

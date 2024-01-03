@@ -1,0 +1,53 @@
+import { SessionConfig, SessionDriverContract } from '@ioc:Adonis/Addons/Session'
+import UserSession from 'App/Models/UserSession'
+import { DateTime } from 'luxon'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import ms from 'ms'
+import { UAParser } from 'ua-parser-js'
+export class DatabaseDriver implements SessionDriverContract {
+  private config: SessionConfig
+  constructor(
+    protected ctx: HttpContextContract,
+    config: SessionConfig
+  ) {
+    this.config = config
+  }
+
+  public async read(sessionId: string) {
+    const session = await UserSession.find(sessionId)
+    if (await this.expired(session as UserSession)) {
+      return null
+    }
+    return session?.serialize().payload
+  }
+
+  public async write(sessionId: string, values: Record<string, any>) {
+    const parser = new UAParser(this.ctx.request.header('user-agent'))
+    await UserSession.updateOrCreate(
+      { id: sessionId },
+      {
+        userId: this.ctx.auth.user?.id,
+        ipAddress: this.ctx.request.ip(),
+        browser: parser.getBrowser(),
+        os: parser.getOS(),
+        device: parser.getDevice(),
+        lastActivityAt: DateTime.now(),
+        payload: values,
+      }
+    )
+  }
+
+  public async destroy(sessionId: string) {
+    const session = await UserSession.find(sessionId)
+    await session?.delete()
+  }
+
+  public async touch() {}
+
+  protected async expired(session: UserSession) {
+    return (
+      session?.lastActivityAt &&
+      ms(this.config.age) < DateTime.now().diff(session.lastActivityAt).milliseconds
+    )
+  }
+}

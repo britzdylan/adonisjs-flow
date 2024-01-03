@@ -1,0 +1,23 @@
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import User from 'App/Models/User'
+import FlashMessages from 'App/Enums/FlashMessage'
+import { Exception } from '@adonisjs/core/build/standalone'
+
+const { EmailNotVerified } = FlashMessages
+
+export default class VerificationCheck {
+  public async handle({ request, auth }: HttpContextContract, next: () => Promise<void>) {
+    if (!auth.isLoggedIn) {
+      const user = await User.findByOrFail('email', request.input('email'))
+      if (!user.isVerified) {
+        throw new Exception(EmailNotVerified, 403, 'E_VERIFICATION_REQUIRED')
+      }
+    }
+
+    if (auth.user?.isVerified === false) {
+      throw new Exception(EmailNotVerified, 403, 'E_VERIFICATION_REQUIRED')
+    }
+
+    await next()
+  }
+}

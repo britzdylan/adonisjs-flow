@@ -1,0 +1,30 @@
+<template>
+  <section class="centered-content lg:max-w-sm gap-8">
+    <Logo />
+    <Card class="flex flex-col gap-4">
+      <template #title>
+        <h1>Resend email verification</h1>
+      </template>
+      <template #content>
+        <p>
+          Enter your email below if you are registered with us you will receive and email to verify
+          your account
+        </p>
+        <EmailVerificationForm class="mt-4" />
+      </template>
+      <template #footer>
+        <Link class="link" href="/">Back to home</Link>
+      </template>
+    </Card>
+  </section>
+</template>
+
+<script setup lang="ts">
+import AuthLayout from 'Layouts/Auth.vue'
+import Logo from 'Components/UI/Logo.vue'
+import EmailVerificationForm from 'Components/Composites/EmailVerificationForm.vue'
+
+defineOptions({
+  layout: AuthLayout,
+})
+</script>

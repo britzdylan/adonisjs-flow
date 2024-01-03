@@ -1,0 +1,8 @@
+import Route from '@ioc:Adonis/Core/Route'
+import flowConfig from 'Config/flow'
+const { views } = flowConfig
+Route.get('/oops', async ({ request, inertia }) => {
+  const message = request.qs().message || 'please try again later or contact support.'
+  const code = request.qs().code
+  return inertia.render(views.errorPage, { title: 'Oops, something went wrong', message, code })
+}).as('error')

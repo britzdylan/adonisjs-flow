@@ -1,0 +1,52 @@
+import type { TFlowConfig } from 'Types/*'
+
+const flowConfig: TFlowConfig = {
+  /*
+|--------------------------------------------------------------------------
+| Features config
+|--------------------------------------------------------------------------
+|
+| Configure optional features for AdonisJs Flow
+|
+*/
+  features: {
+    termsAndPrivacyPolicy: true,
+    verification: 'strict',
+    passwordConfirmation: 5,
+  },
+  /*
+|--------------------------------------------------------------------------
+| Views Config
+|--------------------------------------------------------------------------
+|
+| The views config is to handle all your view template file locations 
+| in one convenient place, without needing to go digging inside the controllers, providers etc.to make 
+| small updates
+|
+*/
+  views: {
+    login: 'Login',
+    register: 'Register',
+    passwordResetRequest: 'Password-reset',
+    passwordUpdate: 'Password-update',
+    verification: 'Verification',
+    errorPage: 'Error',
+    confirmPassword: 'auth/confirm-password',
+    dashboard: 'Dashboard/Index',
+    profile: 'Dashboard/Profile',
+  },
+  errors: {
+    E_INVALID_URL: {
+      title: 'Invalid URL',
+      message:
+        'This URL is no longer valid or has expired, if this problem persists please contact support.',
+    },
+    E_VERIFICATION_REQUIRED: {
+      title: 'Account verification required',
+      message:
+        'Your account has not yet been verified, please verify your account before trying to login.',
+    },
+  },
+}
+
+export default flowConfig

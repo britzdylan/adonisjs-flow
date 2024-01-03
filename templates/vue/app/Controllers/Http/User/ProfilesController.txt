@@ -1,0 +1,111 @@
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { Attachment } from '@ioc:Adonis/Addons/AttachmentLite'
+import Event from '@ioc:Adonis/Core/Event'
+import UserSession from 'App/Models/UserSession'
+import ProfileValidator from 'App/Validators/User/ProfileValidator'
+import FlashMessages from 'App/Enums/FlashMessage'
+import flowConfig from 'Config/flow'
+import User from 'App/Models/User'
+import Route from '@ioc:Adonis/Core/Route'
+import ApiToken from 'App/Models/ApiToken'
+
+const { views } = flowConfig
+const { ProfileUpdated, FileTooLarge, EmailVerificationResent } = FlashMessages
+
+export default class ProfilesController {
+  // view public profile
+  // public async show({}: HttpContextContract) {}
+
+  // view edit profile form
+  public async edit({ auth, session, inertia }: HttpContextContract) {
+    const formUrls = {
+      updateProfile: Route.makeUrl('profile.update'),
+      updateProfileAvatar: Route.makeUrl('profile.updateAvatar'),
+      deleteProfile: Route.makeUrl('user.destroy'),
+      passwordUpdate: Route.makeUrl('password.update'),
+      addToken: Route.makeUrl('api-tokens.store'),
+    }
+
+    const profile = await auth.user?.related('profile').query().firstOrFail()
+
+    const sessions = await auth.user?.related('sessions').query().orderBy('created_at', 'desc')
+
+    const tokens = await ApiToken.all()
+
+    let currentSession: string | undefined
+
+    sessions?.forEach((ses) => {
+      if (session.sessionId === ses.id) {
+        currentSession = session.sessionId
+      }
+    })
+
+    return inertia.render(views.profile, { profile, sessions, currentSession, formUrls, tokens })
+  }
+
+  // handle update profile form submission
+  public async update({ request, session, response, auth }: HttpContextContract) {
+    const flashMessages = [ProfileUpdated]
+    const { email, firstName, lastName } = await request.validate(ProfileValidator)
+    const user = auth.user!
+    console.log(email, user.email)
+    const userProfile = await user.related('profile').query().firstOrFail()!
+
+    userProfile.merge({ firstName, lastName })
+    await userProfile.save()
+
+    if (email !== user.email) {
+      const isNotUnique = await User.findBy('email', email)
+      if (isNotUnique) {
+        session.flash('error', ['Email is not valid or already in use'])
+        return response.redirect().back()
+      }
+      await user.newEmailResetRequest(email)
+      await user.save()
+      Event.emit('user:emailReset', user)
+      flashMessages.push(EmailVerificationResent)
+    }
+
+    session.flash('success', flashMessages)
+
+    return response.redirect().back()
+  }
+
+  // handle update avatar form submission
+  public async updateProfileAvatar({ request, response, auth, session }: HttpContextContract) {
+    const avatar = request.file('avatar')!
+    console.log(avatar)
+    if (avatar.size > 2 * 1024 * 1024) {
+      session.flash('error', [FileTooLarge])
+      return response.redirect().back()
+    }
+
+    const userProfile = await auth.user?.related('profile').query().firstOrFail()!
+    userProfile.avatar = Attachment.fromFile(avatar)
+    await userProfile.save()
+
+    session.flash('success', [ProfileUpdated])
+
+    return response.redirect().back()
+  }
+
+  // handle delete avatar form submission
+  public async deleteProfileAvatar({ response, auth, session }: HttpContextContract) {
+    const userProfile = await auth.user?.related('profile').query().firstOrFail()!
+    userProfile.avatar = null
+    await userProfile.save()
+
+    session.flash('success', [ProfileUpdated])
+
+    return response.redirect().back()
+  }
+
+  // handle delete session form submission
+  public async destroySession({ request, response, session }: HttpContextContract) {
+    const { id } = request.params()
+    let userSession = await UserSession.findOrFail(id)
+    await userSession.delete()
+    session.flash('success', ['Session deleted'])
+    return response.redirect().back()
+  }
+}

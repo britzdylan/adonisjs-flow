@@ -1,0 +1,52 @@
+<template>
+  <form class="flex flex-col w-full gap-2 max-w-xl" @submit.prevent="form.put(formUrl)">
+    <FormInput
+      :validation="validation.avatar"
+      label="Avatar"
+      @input="form.avatar = $event.target.files[0]"
+      id="avatar"
+      type="file"
+      srText="Upload your avatar"
+    />
+
+    <Button
+      :loading="form.processing"
+      :disabled="form.processing"
+      plain
+      type="submit"
+      label="Upload Avatar"
+      class="mt-2 w-max"
+    />
+  </form>
+</template>
+
+<script setup lang="ts">
+import { useForm, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
+
+defineProps<{
+  name: string
+  label: string
+  formUrl: string
+}>()
+
+const form = useForm({
+  avatar: null,
+})
+
+const validation = computed(() => {
+  const props = usePage<{
+    error: {
+      avatar: string[]
+    }
+  }>().props
+
+  return {
+    avatar: props.error?.avatar ? props.error.avatar.join(', ') : '',
+  }
+})
+</script>
+
+<script setup lang="ts"></script>
+
+<style scoped></style>

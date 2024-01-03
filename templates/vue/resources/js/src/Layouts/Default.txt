@@ -1,0 +1,13 @@
+<template>
+  <FlashMessages />
+
+  <Navbar />
+
+  <main class="page-content">
+    <slot />
+  </main>
+</template>
+<script setup>
+import Navbar from 'Components/Composites/Navbar.vue'
+import FlashMessages from 'Components/Composites/FlashMessages.vue'
+</script>

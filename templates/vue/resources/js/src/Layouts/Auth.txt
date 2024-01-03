@@ -1,0 +1,22 @@
+<template>
+  <FlashMessages />
+  <Terms :visible="popup === 'terms'" />
+  <main class="page-content flex flex-col">
+    <slot />
+  </main>
+</template>
+
+<script setup lang="ts">
+import FlashMessages from 'Components/Composites/FlashMessages.vue'
+import Terms from 'Components/Overlays/Terms.vue'
+import { usePage } from '@inertiajs/vue3'
+import { computed, ref } from 'vue'
+
+const popup = computed(() => {
+  return usePage<{
+    query: {
+      popup: string
+    }
+  }>().props.query.popup
+})
+</script>

@@ -1,0 +1,126 @@
+<template>
+  <section class="centered-content lg:max-w-sm gap-8">
+    <Logo />
+    <Card class="flex flex-col gap-4">
+      <template #title>
+        <h1>Register</h1>
+      </template>
+      <template #subtitle>
+        <p>Enter your details below to create your account</p>
+      </template>
+      <template #content>
+        <form class="flex flex-col gap-2" @submit.prevent="form.post(formUrl)">
+          <FormInput
+            label="Email"
+            v-model="form.email"
+            placeholder="john@example.com"
+            id="email_register"
+            type="email"
+            :validation="validation.email"
+            srText="Enter your preferred email address"
+          />
+          <FormInput
+            label="Password"
+            v-model="form.password"
+            placeholder="********"
+            id="password_register"
+            type="password"
+            :validation="validation.password"
+            srText="Password must be 8 or more characters"
+            helpText="8 or more characters"
+          />
+          <FormInput
+            label="Repeat your password"
+            v-model="form.password_confirmation"
+            placeholder="********"
+            id="password_register"
+            type="password"
+            :validation="validation.password_confirmation"
+            srText="Please confirm your password"
+          />
+
+          <template v-if="flowConfig.features.termsAndPrivacyPolicy">
+            <div class="checkbox-wrapper">
+              <Checkbox
+                :value="true"
+                v-model="form.terms"
+                inputId="terms_conditions"
+                name="terms"
+              />
+              <label for="terms_conditions" class="ml-2">
+                Agree to our
+                <span @click.stop="showPopup" class="cursor-pointer underline"
+                  >Terms & conditions</span
+                >
+              </label>
+            </div>
+            <small class="text-red-500">{{ validation.terms }}</small>
+          </template>
+
+          <Button
+            :loading="form.processing"
+            :disabled="form.processing"
+            plain
+            class="mt-4"
+            type="submit"
+            label="Register"
+          />
+        </form>
+      </template>
+      <template #footer>
+        <Link class="link" href="/login">Already have an account? Login Here</Link>
+      </template>
+    </Card>
+  </section>
+</template>
+
+<script setup lang="ts">
+import type { TFlowConfig } from '../../../../types'
+import { computed } from 'vue'
+import { useForm, usePage, router } from '@inertiajs/vue3'
+import AuthLayout from 'Layouts/Auth.vue'
+import Logo from 'Components/UI/Logo.vue'
+
+defineOptions({
+  layout: AuthLayout,
+})
+
+defineProps<{
+  formUrl: string
+}>()
+
+const flowConfig = usePage<{
+  flowConfig: TFlowConfig
+}>().props.flowConfig
+
+const form = useForm({
+  email: '',
+  password: '',
+  password_confirmation: '',
+  terms: undefined,
+})
+
+const validation = computed(() => {
+  const props = usePage<{
+    error: {
+      email: string[]
+      password: string[]
+      password_confirmation: string[]
+      terms: string[]
+    }
+  }>().props
+
+  return {
+    email: props.error?.email ? props.error.email.join(', ') : '',
+    password: props.error?.password ? props?.error.password.join(', ') : '',
+    password_confirmation: props.error?.password_confirmation
+      ? props.error.password_confirmation.join(', ')
+      : '',
+    terms: props?.error?.terms ? props.error.terms.join(', ') : '',
+  }
+})
+
+const showPopup = () => {
+  router.visit('/register?popup=terms')
+}
+</script>

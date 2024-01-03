@@ -1,0 +1,33 @@
+<template>
+  <section class="centered-content lg:max-w-sm gap-8">
+    <Logo />
+    <Card class="flex flex-col gap-4">
+      <template #title>
+        <h1>{{ title }}</h1>
+      </template>
+      <template #content>
+        <p>{{ message }}</p>
+        <Link href="/verification" class="mt-4 block link" v-if="code === 'E_VERIFICATION_REQUIRED'">
+          Resend Email Verification Link
+        </Link>
+      </template>
+      <template #footer>
+        <Link class="link" href="/">Back to home</Link>
+      </template>
+    </Card>
+  </section>
+</template>
+
+<script setup lang="ts">
+import AuthLayout from 'Layouts/Auth.vue'
+import Logo from 'Components/UI/Logo.vue'
+
+defineOptions({
+  layout: AuthLayout,
+})
+defineProps<{
+  title: string
+  message: string
+  code: string
+}>()
+</script>

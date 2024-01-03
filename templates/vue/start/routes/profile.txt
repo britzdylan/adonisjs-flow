@@ -1,0 +1,16 @@
+import Route from '@ioc:Adonis/Core/Route'
+Route.group(() => {
+  Route.group(() => {
+    Route.get('/', 'ProfilesController.edit').as('profile.edit')
+    Route.put('/', 'ProfilesController.update').as('profile.update')
+    Route.put('/avatar', 'ProfilesController.updateProfileAvatar').as('profile.updateAvatar')
+    Route.put('/password', 'UsersController.updatePassword').as('password.update')
+    Route.delete('/avatar', 'ProfilesController.deleteProfileAvatar').as('profile.deleteAvatar')
+    Route.delete('/', 'UsersController.destroy').as('user.destroy')
+    Route.delete('/sessions/:id', 'ProfilesController.destroySession').as('destroySession')
+  }).middleware('auth')
+
+  Route.get('/:email', 'UsersController.confirmEmailUpdateRequest').as('user.newEmail')
+})
+  .namespace('App/Controllers/Http/User')
+  .prefix('/dashboard/profile')

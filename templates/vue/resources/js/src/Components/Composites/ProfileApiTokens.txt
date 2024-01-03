@@ -1,0 +1,129 @@
+<template>
+  <form class="flex flex-col w-full gap-2 max-w-xl" @submit.prevent="createToken">
+    <FormInput
+      :validation="validation.name"
+      label="Token Name"
+      v-model="form.name"
+      placeholder="Choose an descriptive name for your token"
+      id="name"
+      type="text"
+      srText="Enter your token name"
+    />
+
+    <FormInput
+      :validation="validation.expiresIn"
+      label="Expiration"
+      v-model="form.expiresIn"
+      placeholder="Choose an expiration time for your token"
+      id="expiresIn"
+      type="number"
+      srText="Enter your token expiration"
+    >
+      <Dropdown
+        v-model="selectedExpiry"
+        :options="expiresInOptions"
+        optionLabel="label"
+        placeholder="Select a expiration time"
+        class="w-full border-surface-100"
+      />
+    </FormInput>
+
+    <Button
+      :loading="form.processing"
+      :disabled="form.processing"
+      plain
+      type="submit"
+      label="Create New Token"
+      class="mt-2 w-max"
+    />
+  </form>
+  <hr />
+  <template v-for="item in tokens">
+    <div class="flex items-center justify-between gap-3 w-full">
+      <p class="font-bold">{{ item.name }}</p>
+      <Button class="w-max px-3.5 py-2.5 h-max mt-2" severity="danger"
+        ><Link
+          class="block font-semibold text-sm text-white"
+          as="button"
+          method="delete"
+          :href="`/dashboard/api-tokens/${item.id}`"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+            /></svg></Link
+      ></Button>
+    </div>
+  </template>
+</template>
+
+<script setup lang="ts">
+import { useForm, usePage } from '@inertiajs/vue3'
+import { computed, ref } from 'vue'
+
+const props = defineProps<{
+  name: string
+  label: string
+  formUrl: string
+  tokens: any[]
+}>()
+
+const selectedExpiry = ref({
+  label: '1 day',
+  value: '1 day',
+})
+
+const expiresInOptions = [
+  {
+    label: '1 day',
+    value: '1 day',
+  },
+  {
+    label: '7 days',
+    value: '7 days',
+  },
+  {
+    label: '30 days',
+    value: '30 days',
+  },
+  {
+    label: '90 days',
+    value: '90 days',
+  },
+  {
+    label: 'Never',
+    value: null,
+  },
+]
+
+const form = useForm({
+  name: '',
+  expiresIn: '',
+})
+
+const createToken = () => {
+  form.expiresIn = selectedExpiry.value.value
+  form.post(props.formUrl)
+}
+
+const validation = computed(() => {
+  const props = usePage<{
+    error: {
+      name: string[]
+    }
+  }>().props
+
+  return {
+    name: props.error?.name ? props.error.name.join(', ') : '',
+  }
+})
+</script>

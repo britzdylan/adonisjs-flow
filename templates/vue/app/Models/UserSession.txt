@@ -1,0 +1,43 @@
+// app/Models/UserSession.ts
+
+import { DateTime } from 'luxon'
+import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import Encryption from '@ioc:Adonis/Core/Encryption'
+import type { UAParser } from 'ua-parser-js'
+export default class UserSession extends BaseModel {
+  @column({ isPrimary: true })
+  public id: string
+
+  @column()
+  public userId: number | null
+
+  @column()
+  public ipAddress: string
+
+  @column()
+  public os: UAParser.IOS
+
+  @column()
+  public device: UAParser.IDevice
+
+  @column()
+  public browser: UAParser.IBrowser
+
+  @column()
+  public country: string | null
+
+  @column({
+    prepare: (value: string) => Encryption.encrypt(JSON.stringify(value)),
+    consume: (value: string) => JSON.parse(Encryption.decrypt(value) as string),
+  })
+  public payload: string | object
+
+  @column()
+  public lastActivityAt: DateTime
+
+  @column.dateTime({ autoCreate: true })
+  public createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  public updatedAt: DateTime
+}

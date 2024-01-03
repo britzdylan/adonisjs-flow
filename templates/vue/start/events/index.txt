@@ -1,0 +1,32 @@
+/*
+|--------------------------------------------------------------------------
+| Preloaded File
+|--------------------------------------------------------------------------
+|
+| Any code written inside this file will be executed during the application
+| boot.
+|
+*/
+import Event from '@ioc:Adonis/Core/Event'
+import Mail from '@ioc:Adonis/Addons/Mail'
+import EmailSendingProvider from 'App/Providers/EmailSendingProvider'
+import './auth'
+
+Event.onError((event, error, eventData) => {
+  console.log(event, error, eventData)
+})
+
+// TODO log emails to database
+Event.on('mail:sent', Mail.prettyPrint)
+
+Event.on('mail:sendEmailVerification', (user) => {
+  EmailSendingProvider.sendEmailVerificationLink(user)
+})
+
+Event.on('user:delete', (user) => {
+  EmailSendingProvider.sendAccountDeleteNotification(user)
+})
+
+Event.on('user:emailReset', (user) => {
+  EmailSendingProvider.sendNewEmailRequestConfirmation(user)
+})

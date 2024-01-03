@@ -1,0 +1,86 @@
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+@layer utilities {
+  .hide-before {
+    @apply before:!opacity-0;
+  }
+}
+
+@layer components {
+  .page-content {
+    @apply py-6 flex-grow;
+  }
+
+  .link {
+    @apply text-zinc-600 dark:text-zinc-300 hover:underline underline-offset-2 cursor-pointer inline-block;
+  }
+
+  .input-wrapper {
+    @apply flex flex-col gap-1;
+  }
+
+  .checkbox-wrapper {
+    @apply flex flex-row items-center;
+  }
+
+  .input-wrapper label,
+  .checkbox-wrapper label {
+    @apply text-sm font-medium;
+  }
+
+  .main-nav {
+    @apply flex flex-row items-center w-full py-4 gap-4;
+  }
+
+  .main-nav ul {
+    @apply mr-auto ml-8;
+  }
+
+  .centered-content {
+    @apply flex flex-col items-center justify-center gap-4 md:min-w-[384px] m-auto;
+  }
+}
+
+/* Initial Values */
+:root {
+  --primary-50: 236 238 255;
+  --primary-100: 221 224 255;
+  --primary-200: 194 199 255;
+  --primary-300: 156 161 255;
+  --primary-400: 122 117 255;
+  --primary-500: 90 69 255;
+  --primary-600: 91 54 245;
+  --primary-700: 78 42 216;
+  --primary-800: 63 37 174;
+  --primary-900: 54 38 137;
+  --primary-950: 34 22 80;
+  --surface-0: 255 255 255;
+  --surface-50: 202 207 216;
+  --surface-100: 188 190 200;
+  --surface-200: 164 167 183;
+  --surface-300: 128 132 153;
+  --surface-400: 89 92 110;
+  --surface-500: 65 67 83;
+  --surface-600: 49 50 63;
+  --surface-700: 39 40 48;
+  --surface-800: 30 30 36;
+  --surface-900: 24 24 27;
+  --surface-950: 9 9 11;
+}
+
+#app {
+  @apply min-h-screen mx-auto container flex flex-col px-4;
+}
+
+#profile-overlay {
+  @apply hide-before;
+}

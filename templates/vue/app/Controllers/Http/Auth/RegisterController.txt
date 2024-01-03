@@ -1,0 +1,83 @@
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Event from '@ioc:Adonis/Core/Event'
+import User from 'App/Models/User'
+import RegisterValidator from 'App/Validators/Auth/RegisterValidator'
+import flowConfig from 'Config/flow'
+import FlashMessage from 'App/Enums/FlashMessage'
+import Route from '@ioc:Adonis/Core/Route'
+import EmailVerificationValidator from 'App/Validators/Auth/EmailVerificationValidator'
+
+const { register, verification } = flowConfig.views
+const { RegisterSuccess, EmailVerified, EmailAlreadyVerified EmailVerificationResent } = FlashMessage
+
+/**
+ * Controller for registering and verifying users.
+ */
+export default class RegistersController {
+  /**
+   * Renders the registration view.
+   */
+  public async create({ inertia }: HttpContextContract) {
+    return inertia.render(register, { formUrl: Route.makeUrl('register.store') })
+  }
+
+  /**
+   * Validates user data and creates a new user.
+   */
+  public async store({ request, response, session, auth }: HttpContextContract): Promise<void> {
+    const userData = await request.validate(RegisterValidator)
+    delete userData.terms
+    const user = await User.create(userData)
+
+    Event.emit('user:register', user)
+    session.flash('success', [RegisterSuccess])
+
+    if (flowConfig.features.verification === 'strict') {
+      return response.redirect().toRoute('login.create')
+    }
+    auth.login(user)
+    return response.redirect().toRoute('dashboard.index')
+  }
+
+  /**
+   * Verifies a user's email address.
+   */
+  public async edit({ request, response, session }: HttpContextContract): Promise<void> {
+    const token = request.params().token
+    const user = await User.findByOrFail('emailVerificationToken', token)
+
+    const verified = user.verifyEmail(token)
+    if (!verified) {
+      return response.status(403).badRequest()
+    }
+    await user.save()
+    session.flash('success', [EmailVerified])
+    return response.redirect().toRoute('login.create')
+  }
+  /**
+   * Render  email verification view.
+   */
+  public async createVerification({ inertia }: HttpContextContract) {
+    return inertia.render(verification)
+  }
+  /**
+   * Resend email verification.
+   */
+  public async resendVerification({
+    request,
+    response,
+    session,
+  }: HttpContextContract): Promise<void> {
+    const { email } = await request.validate(EmailVerificationValidator)
+    const user = await User.findByOrFail('email', email)
+    if (user.isVerified) {
+      session.flash('success', [EmailAlreadyVerified])
+      return response.redirect().back()
+    }
+    user.generateVerificationToken()
+    await user.save()
+    Event.emit('mail:sendEmailVerification', user)
+    session.flash('success', [EmailVerificationResent])
+    return response.redirect().back()
+  }
+}

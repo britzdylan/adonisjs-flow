@@ -1,0 +1,35 @@
+<template>
+  <div>
+    <a href="/" :title="appName" class="logo"
+      ><svg
+        width="33"
+        height="33"
+        viewBox="0 0 33 33"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="fill-current"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M1.53732 26.9625C3.55717 31.3671 7.88703 32.6662 16.3331 32.6662C29.506 32.6662 32.6662 29.506 32.6662 16.3331C32.6662 10.2781 31.9985 6.33867 29.9977 3.84921C26.6463 16.6928 15.2646 26.2922 1.53732 26.9625ZM0 16.3331C0 17.6486 0.0315142 18.8642 0.101368 19.9868C0.399837 19.9956 0.699404 20 1 20C13.1751 20 23.6563 12.7473 28.3587 2.32655C25.8529 0.590851 22.029 0 16.3331 0C3.16017 0 0 3.16017 0 16.3331Z"
+        />
+      </svg>
+    </a>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { usePage } from '@inertiajs/vue3'
+
+const page = usePage()
+
+const appName = computed(() => page.props.appName as string)
+</script>
+
+<style scoped>
+.logo {
+  @apply text-xl font-bold text-primary-900 dark:text-primary-50;
+}
+</style>

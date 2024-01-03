@@ -1,0 +1,10 @@
+import Route from '@ioc:Adonis/Core/Route'
+
+Route.group(() => {
+  Route.post('/', 'ApiTokensController.store').as('store')
+  Route.delete('/:id', 'ApiTokensController.destroy').as('destroy')
+})
+  .namespace('App/Controllers/Http/User')
+  .middleware('auth')
+  .as('api-tokens')
+  .prefix('dashboard/api-tokens')

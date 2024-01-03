@@ -1,0 +1,32 @@
+<template>
+  <Dialog
+    v-model:visible="visible"
+    modal
+    header="Terms and Conditions"
+    :style="{ width: '50rem' }"
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+  >
+    <article
+      v-html="markdown.render(terms)"
+      class="prose prose-zinc prose-sm dark:prose-invert"
+    ></article>
+  </Dialog>
+</template>
+
+<script setup lang="ts">
+import MarkdownIt from 'markdown-it'
+import { onMounted, ref } from 'vue'
+
+const markdown = new MarkdownIt()
+
+const visible = ref<boolean>(true)
+const terms = ref('')
+
+onMounted(() => {
+  fetch('/content/terms.md')
+    .then((response) => response.text())
+    .then((data) => {
+      terms.value = data
+    })
+})
+</script>

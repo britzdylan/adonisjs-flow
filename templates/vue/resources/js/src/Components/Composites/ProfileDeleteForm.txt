@@ -1,0 +1,23 @@
+<template>
+  <p class="max-w-lg dark:text-surface-100 text-surface-400">
+    Please note this is a permanent action and all of your data will be wiped from our database.
+    This is irreversible and make sure to backup any data you might need in the future
+  </p>
+  <Button class="w-max px-3.5 py-2.5 h-max mt-4" severity="danger"
+    ><Link
+      class="block font-semibold text-sm text-white"
+      as="button"
+      method="delete"
+      :href="formUrl"
+      >Logout and delete your account</Link
+    ></Button
+  >
+</template>
+
+<script setup lang="ts">
+defineProps<{
+  formUrl: string
+}>()
+</script>
+
+<style scoped></style>

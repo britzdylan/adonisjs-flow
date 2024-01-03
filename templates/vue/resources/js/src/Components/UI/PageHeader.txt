@@ -1,0 +1,77 @@
+<template>
+  <div class="col-span-12 p-4 flex flex-col gap-2 border-b">
+    <h1 class="text-xl font-bold dark:text-white text-black">
+      <slot />
+    </h1>
+    <div class="text-sm flex-1 dark:text-surface-100 text-surface-500">
+      <ul class="inline-flex gap-3">
+        <li>
+          <Link href="/dashboard"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+              />
+            </svg>
+          </Link>
+        </li>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <template v-for="(item, index) in urls">
+          <li class="inline-flex gap-3" v-if="index > 0">
+            <a :href="`/${getRoute(index)}`">{{ item }} </a>
+            <svg
+              v-if="index < urls.length - 1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="w-5 h-5"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </li>
+        </template>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
+
+const props = usePage<{
+  route: string
+}>().props
+
+const urls = computed(() => props.route.split('/').filter((item) => item !== ''))
+
+const getRoute = (index: number) =>
+  urls.value
+    .filter((item) => item !== '')
+    .slice(0, index + 1)
+    .join('/')
+</script>

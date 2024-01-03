@@ -1,0 +1,23 @@
+<template>
+  <Avatar v-if="avatar" :image="avatar" class="avatar" shape="circle" />
+  <Avatar v-else icon="pi pi-user" class="avatar" shape="circle" />
+</template>
+
+<script setup lang="ts">
+defineProps({
+  avatar: {
+    type: String,
+    default: null,
+  },
+})
+</script>
+
+<style scoped>
+.avatar {
+  @apply cursor-pointer bg-surface-300 overflow-hidden;
+}
+
+.avatar > .pi::before {
+  @apply text-surface-100 dark:text-surface-500;
+}
+</style>

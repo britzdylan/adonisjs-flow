@@ -1,0 +1,15 @@
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<{}, {}, any>
+  export default component
+}
+
+declare module '*.js'
+
+declare module 'Theme/*'
+
+declare module 'Layouts/*'
+
+declare module 'Components/*'
+
+declare module 'Types/*'

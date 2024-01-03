@@ -1,0 +1,27 @@
+<template>
+  <nav class="w-48">
+    <Menu :model="items">
+      <template #item="{ item, props }">
+        <Link
+          :href="item.href"
+          v-ripple
+          class="flex items-center text-sm font-normal"
+          v-bind="props.action"
+        >
+          <span :class="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </Link>
+      </template></Menu
+    >
+  </nav>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+const items = ref([
+  { label: 'Profile', icon: 'pi pi-cog', href: '/dashboard/profile' },
+  { label: 'Logout', icon: 'pi pi-sign-out', href: '/logout' },
+])
+</script>
+
+<style scoped></style>

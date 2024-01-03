@@ -1,0 +1,54 @@
+<template>
+  <nav class="main-nav" :model="items">
+    <Logo />
+    <ul class="inline-flex gap-2">
+      <template v-for="item in items">
+        <Link :href="item.href"><Button :icon="item.icon" :label="item.label" text plain /></Link>
+      </template>
+    </ul>
+
+    <div class="flex items-center gap-2 relative">
+      <template v-if="profile">
+        <UserAvatar :avatar="profile?.avatar?.url" @click="toggle" />
+
+        <OverlayPanel id="profile-overlay" ref="op">
+          <ProfileMenu />
+        </OverlayPanel>
+      </template>
+      <template v-else>
+        <Link href="/login"><Button size="small" icon="pi pi-sign-in" label="Sign In" text /></Link>
+        <Link href="/register"
+          ><Button size="small" icon="pi pi-user-plus" label="Register" text
+        /></Link>
+      </template>
+    </div>
+  </nav>
+</template>
+
+<script setup>
+import { computed, ref } from 'vue'
+import { usePage } from '@inertiajs/vue3'
+import Logo from 'Components/UI/Logo.vue'
+import ProfileMenu from 'Components/UI/ProfileMenu.vue'
+import UserAvatar from 'Components/UI/UserAvatar.vue'
+
+const op = ref()
+const items = ref([
+  {
+    label: 'Dashboard',
+    href: '/dashboard',
+  },
+])
+const toggle = (event) => {
+  op.value.toggle(event)
+}
+const profile = computed(() => {
+  return usePage().props.profile
+})
+</script>
+
+<style scoped>
+.links {
+  @apply flex items-center gap-4;
+}
+</style>

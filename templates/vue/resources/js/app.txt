@@ -1,0 +1,61 @@
+import type { DefineComponent } from 'vue'
+import { createApp, h } from 'vue'
+import { createInertiaApp } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
+import PrimeVue from 'primevue/config'
+
+// CSS
+import 'primeicons/primeicons.css'
+import '../css/app.css'
+
+// Layouts
+import Theme from 'Theme/'
+import DefaultLayout from 'Layouts/Default.vue'
+
+// Prime Components
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
+import Menubar from 'primevue/menubar'
+import ToastService from 'primevue/toastservice'
+import Card from 'primevue/card'
+import Avatar from 'primevue/avatar'
+import Menu from 'primevue/menu'
+import OverlayPanel from 'primevue/overlaypanel'
+import Checkbox from 'primevue/checkbox'
+import Dialog from 'primevue/dialog'
+import FormInput from 'Components/UI/formInput.vue'
+import PageHeader from 'Components/UI/pageHeader.vue'
+import Dropdown from 'primevue/dropdown'
+
+createInertiaApp({
+  resolve: (name) => {
+    const page: DefineComponent = require(`./src/Pages/${name}`).default
+    if (!page.layout) {
+      page.layout = DefaultLayout
+    }
+    return page
+  },
+  setup({ el, App, props, plugin }) {
+    createApp({ render: () => h(App, props) })
+      .use(plugin)
+      .use(PrimeVue, {
+        unstyled: true,
+        pt: Theme,
+      })
+      .use(ToastService)
+      .component('Link', Link)
+      .component('Button', Button)
+      .component('Menubar', Menubar)
+      .component('Card', Card)
+      .component('Avatar', Avatar)
+      .component('Menu', Menu)
+      .component('OverlayPanel', OverlayPanel)
+      .component('InputText', InputText)
+      .component('Checkbox', Checkbox)
+      .component('Dialog', Dialog)
+      .component('Dropdown', Dropdown)
+      .component('FormInput', FormInput)
+      .component('PageHeader', PageHeader)
+      .mount(el)
+  },
+})

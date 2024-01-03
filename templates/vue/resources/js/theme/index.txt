@@ -1,0 +1,27 @@
+import global from './global.js';
+import button from './button';
+import inputtext from './inputtext';
+import menubar from './menubar';
+import toast from './toast';
+import card from './card';
+import avatar from './avatar';
+import menu from './menu';
+import overlaypanel from './overlaypanel';
+import checkbox from './checkbox';
+import dialog from './dialog';
+import dropdown from './dropdown';
+
+export default {
+    global,
+    button,
+    inputtext,
+    menubar,
+    toast,
+    card,
+    avatar,
+    menu,
+    overlaypanel,
+    checkbox,
+    dialog,
+    dropdown
+}

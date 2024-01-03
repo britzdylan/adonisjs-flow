@@ -1,0 +1,45 @@
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Event from '@ioc:Adonis/Core/Event'
+import flowConfig from 'Config/flow'
+import FlashMessage from 'App/Enums/FlashMessage'
+import Route from '@ioc:Adonis/Core/Route'
+
+const { login } = flowConfig.views
+const { LoginSuccess, LogoutSuccess } = FlashMessage
+
+/**
+ * Controller responsible for handling user login and logout functionality.
+ */
+export default class LoginController {
+  /**
+   * Renders the login view.
+   */
+  public async create({ inertia }: HttpContextContract) {
+    return inertia.render(login, { formUrl: Route.makeUrl('login.store') })
+  }
+  /**
+   * Authenticates the user and logs them in.
+   */
+  public async store(ctx: HttpContextContract): Promise<void> {
+    const { request, auth, response, session } = ctx
+    const { email, password } = {
+      email: request.input('email'),
+      password: request.input('password'),
+    }
+    const user = await auth.use('web').attempt(email, password)
+
+    Event.emit('user:login', { user, ctx })
+    session.flash('success', [LoginSuccess])
+    return response.redirect().toRoute('dashboard.index')
+  }
+  /**
+   * Logs the user out.
+   */
+  public async destroy(ctx: HttpContextContract): Promise<void> {
+    const { auth, response, session } = ctx
+    await auth.logout()
+    session.flash('success', [LogoutSuccess])
+    Event.emit('user:logout', { ctx })
+    return response.redirect().toRoute('login.create')
+  }
+}

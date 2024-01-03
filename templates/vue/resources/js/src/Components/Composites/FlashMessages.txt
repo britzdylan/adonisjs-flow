@@ -1,0 +1,50 @@
+<template>
+  <div>
+    <Toast position="bottom-right" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import Toast from 'primevue/toast'
+import { useToast } from 'primevue/usetoast'
+import { watch, computed, onMounted } from 'vue'
+import { usePage } from '@inertiajs/vue3'
+
+const toast = useToast()
+const showToast = (severity: 'success' | 'info' | 'error' | 'warn', detail: string) => {
+  toast.add({ severity: severity, summary: '', detail: detail, life: 3000 })
+}
+const stats = ['error', 'success', 'warn', 'info']
+
+onMounted(() => {
+  stats.forEach((e) => {
+    const messages = usePage().props[e]
+    if (Array.isArray(messages)) {
+      messages.forEach((detail: string) => {
+        showToast(e as 'success' | 'info' | 'error' | 'warn', detail)
+      })
+    }
+  })
+})
+
+const messages = computed<Record<(typeof stats)[number], any>>(() => {
+  const acc = {}
+  stats.map((item) => {
+    acc[item] = Array.isArray(usePage().props[item]) ? usePage().props[item] : []
+    return acc
+  })
+  return acc
+})
+
+watch(
+  messages,
+  (newVal) => {
+    for (const [key, value] of Object.entries(newVal)) {
+      value.forEach((item) => {
+        showToast(key as 'success' | 'info' | 'error' | 'warn', item as string)
+      })
+    }
+  },
+  { immediate: true, deep: true }
+)
+</script>
