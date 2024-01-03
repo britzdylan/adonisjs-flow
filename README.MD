@@ -1,6 +1,6 @@
 # Welcome to Adonis Flow
 
-Adonis Flow is a full stack application scaffolding for [AdonisJs](https://adonisjs.com). Adonis Flow provides the perfect starting point for your next Adonisjs application and includes login, registration, email verification, profile management, session management, Api Token management, and transactional emails.
+Adonis Flow is a full stack application scaffolding for [AdonisJs](https://adonisjs.com). AdonisJs Flow provides the perfect starting point for your next Adonisjs application and includes login, registration, email verification, profile management, session management, Api Token management, and transactional emails.
 
 Adonis is designed using Tailwind CSS and [Edgejs](https://edgejs.dev/docs/introduction) scaffolding.
 
@@ -16,15 +16,15 @@ Thank you for considering contributing to Adonis Flow! But unfortunately contrib
 
 _New Applications Only_
 
-Adonis Flow should only be installed into new AdonisJs applications. Attempting to install Adonis Flow into an existing AdonisJs application will result in unexpected behavior and issues. In addition to that, your application should already have the following packages installed and configred:
+Adonis Flow should only be installed into new AdonisJs applications. Attempting to install Adonis Flow into an existing AdonisJs application will result in unexpected behavior and issues. In addition to that, your application should already have the following packages installed and configured:
 
-Encore (can be easily done at the point of creating the application)
-Lucid
-Auth
-Drive
-Mail
-Session
-attachment-lite
+- Encore (can be easily done at the point of creating the application)
+- Lucid
+- Auth
+- Drive
+- Mail
+- Session
+- attachment-lite
 
 _Database_
 
@@ -271,4 +271,4 @@ declare module '@ioc:Adonis/Core/Event' {
 
 ## License
 
-Adonis Flow is open-sourced software licensed under the MIT license.
+AdonisJs Flow is open-sourced software licensed under the MIT license.
