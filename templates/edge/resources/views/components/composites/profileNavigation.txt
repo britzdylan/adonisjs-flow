@@ -1,0 +1,26 @@
+@component('components.ui.dropdown',{
+classes: 'dropdown-end',
+labelClass: 'btn btn-ghost btn-circle avatar',
+})
+@slot('label')
+
+<div class="w-10 rounded-full">
+    @if(gProfile.avatar == null)
+    <img alt="{{gProfile.fullName}}" src="/avatar_placeholder.jpg" />
+    @else
+    <img alt="{{gProfile.fullName}}" src="{{gProfile.avatar.url}}" />
+    @endif
+</div>
+@end
+@slot('main')
+<ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+    <li>
+        <a title="Profile" href="{{route('profile.edit')}}" class="justify-between">
+            Profile
+        </a>
+    </li>
+    <li><a title="API Tokens" href="{{route('api-tokens.index')}}">API Tokens</a></li>
+    <li><a title="logout" href="{{route('login.destroy')}}">Logout</a></li>
+</ul>
+@end
+@end

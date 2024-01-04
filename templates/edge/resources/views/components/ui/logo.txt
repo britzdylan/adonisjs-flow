@@ -1,0 +1,3 @@
+@set('title', capitalCase(sentenceCase(env('APP_NAME'))))
+
+<a href="{{route('dashboard.index')}}" title="{{title}}" class=" text-xl">{{title}}</a>

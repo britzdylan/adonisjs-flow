@@ -1,0 +1,11 @@
+@set('attr', $props.serializeExcept(['labelClass','label', 'classes']))
+<div class="dropdown {{ classes }}" {{ attr }}>
+    <label tabindex="0" class="{{ labelClass ?? 'btn m-1' }}">
+        @if($props.get('label'))
+        {{ $props.get('label') }}
+        @else
+        {{{ await $slots.label() }}}
+        @end
+    </label>
+    {{{ await $slots.main() }}}
+</div>
