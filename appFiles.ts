@@ -39,7 +39,7 @@ const errors = ['errors/not-found', 'errors/server-error', 'errors/unauthorized'
 
 const partials = ['partials/meta']
 
-export const sharedViews = ['app', ...emails, ...errors, ...partials]
+export const sharedViews = [...emails, ...errors, ...partials]
 
 export const sharedJs = ['app']
 

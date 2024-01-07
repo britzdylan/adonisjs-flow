@@ -377,7 +377,7 @@ const getAllCSS = (options: ScaffoldOptions) => {
 
 const getAllJs = (options: ScaffoldOptions) => {
   if (options.stack === 'vue') {
-    return [...sharedJs, ...themeFiles]
+    return ['app', ...sharedJs, ...themeFiles]
   }
 
   return [...sharedJs]
