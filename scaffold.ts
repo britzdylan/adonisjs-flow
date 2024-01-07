@@ -334,7 +334,7 @@ const getAllViews = (options: ScaffoldOptions) => {
     'partials/profile/password',
     'partials/profile/sessions',
     'partials/api-tokens/create-token',
-    'partials/api-token/list-tokens',
+    'partials/api-tokens/list-tokens',
   ]
 
   const layouts = ['layouts/auth', 'layouts/main']
