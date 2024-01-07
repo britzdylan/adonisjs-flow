@@ -364,7 +364,7 @@ const getAllViews = (options: ScaffoldOptions) => {
     return [...partials, ...layouts, ...dashboard, ...components, ...auth, ...sharedViews]
   }
 
-  return [...sharedViews]
+  return [...sharedViews, 'partials/meta', 'app']
 }
 
 const getAllCSS = (options: ScaffoldOptions) => {
@@ -377,7 +377,7 @@ const getAllCSS = (options: ScaffoldOptions) => {
 
 const getAllJs = (options: ScaffoldOptions) => {
   if (options.stack === 'vue') {
-    return ['app', ...sharedJs, ...themeFiles]
+    return [...sharedJs, ...themeFiles]
   }
 
   return [...sharedJs]
