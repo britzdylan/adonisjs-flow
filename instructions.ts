@@ -95,7 +95,7 @@ export default async function instructions(
     }
 
     const logLines = [
-      `Installing: ${sink.logger.colors.gray(pkg.getInstalls(true).list.join(', '))}`,
+      `Installing: ${sink.logger.colors.gray(pkg.getInstalls().list.join(', '))}`,
     ]
 
     const spinner = sink.logger.await(logLines.join(' '))
