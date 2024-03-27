@@ -1,3 +1,5 @@
+_Note this project is no longer maintained. A new version is in the works for AdonisJs v6. More details coming soon_
+
 # Welcome to Adonis Flow
 
 Adonis Flow is a full stack application scaffolding for [AdonisJs](https://adonisjs.com). AdonisJs Flow provides the perfect starting point for your next Adonisjs application and includes login, registration, email verification, profile management, session management, Api Token management, and transactional emails.
